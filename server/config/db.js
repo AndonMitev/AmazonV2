@@ -3,6 +3,7 @@ const env = require('./envoirment');
 mongoose.Promise = global.Promise;
 
 require('../models/ProductModel');
+require('../models/UserModel');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
