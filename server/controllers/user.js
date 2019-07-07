@@ -49,9 +49,9 @@ const onSignIn = async (req, res) => {
                 });
         }
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        const isPasswordMatching = await bcrypt.compare(password, user.password);
 
-        if (isPasswordMatch) {
+        if (isPasswordMatching) {
             const { email, _id } = user;
 
             const token = await jwt.sign({email, _id}, env.dev.jwtKey, {expiresIn: '2 days'});
