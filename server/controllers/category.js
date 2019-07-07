@@ -1,17 +1,25 @@
 const router = require('express').Router();
 const Category = require('mongoose').model('Category');
 
+const jsonResponseOnError = (res, statusCode, error) =>
+    res
+        .status(statusCode)
+        .json({ error });
+
+
+const jsonResponseOnSuccess = (res, statusCode, data) =>
+    res
+        .status(statusCode)
+        .json({ data, message });
+
 const onCategories = async (req, res) => {
     try {
-        const categories = Category.find();
+        const categories = Category
+            .find();
 
-        return res.
-            status(200)
-            .json(categories);
+        return jsonResponseOnSuccess(res, 200, { categories });
     } catch (error) {
-        return res.
-            status(500)
-            .json({ error });
+        return jsonResponseOnError(500, error);
     }
 }
 
@@ -19,17 +27,13 @@ const onCategoryByName = async (req, res) => {
     try {
         const { params: { name } } = req;
 
-        const category = Category.findOne({ name })
+        const category = Category
+            .findOne({ name })
             .populate('products');
 
-        return res
-            .status(200)
-            .json(category);
-
+        return jsonResponseOnSuccess(res, 200, { category });
     } catch (error) {
-        return res
-            .status(500)
-            .json({ error });
+        return jsonResponseOnError(500, error);
     }
 }
 

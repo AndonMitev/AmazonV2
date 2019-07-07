@@ -4,6 +4,18 @@ const Category = require('mongoose').model('Category');
 const verifyToken = require('../middleware/verify-token');
 const upload = require('../config/multer');
 
+const jsonResponseOnError = (res, statusCode, error) =>
+    res
+        .status(statusCode)
+        .json({ error });
+
+
+const jsonResponseOnSuccess = (res, statusCode, data, message) =>
+    res
+        .status(statusCode)
+        .json({ data, message });
+
+
 const addImages = (imagesData) => {
     const imagePaths = [];
     imagesData.forEach(image => imagePaths.push(image.path));
@@ -37,27 +49,13 @@ const onCreateProduct = async (req, res) => {
         const { categories } = productData;
         addToCategory(categories, product._id)
 
-        return res.status(201)
-            .json({
-                message: 'Product added',
-                product
-            });
-
+        return jsonResponseOnSuccess(res, 201, { product, message: 'Product added' });
     } catch (error) {
-        console.log(error);
-
         if (error.errors && error.errors.state) {
-            return res.status(400)
-                .json({
-                    message: 'error.errors.state.message',
-                    failed: true
-                });
+            return jsonResponseOnError(res, 400, error.errors.state.message);
         }
 
-        return res.status(500)
-            .json({
-                message: 'Server error',
-            });
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
@@ -65,14 +63,10 @@ const onGettingAllProducts = async (req, res) => {
     try {
         const products = await Product.find();
 
-        return res
-            .status(200)
-            .json(products);
+        return jsonResponseOnSuccess(res, 202, { products });
     } catch (error) {
         console.log(error);
-        return res
-            .status(500)
-            .json({ error });
+        return jsonResponseOnError(res, 500, error);
     }
 }
 

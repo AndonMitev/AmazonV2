@@ -4,6 +4,13 @@ const Comment = mongose.model('Comment');
 const Product = mongose.model('Product');
 const verifyToken = require('../middleware/verify-token');
 
+const jsonResponseOnError = (res, statusCode, error) =>
+    res.status(statusCode).json({ error });
+
+
+const jsonResponseOnSuccess = (res, statusCode, data) =>
+    res.status(statusCode).json({ data, message });
+
 const onCommentAdded = async (req, res) => {
     try {
         const productId = req.params.productId;
@@ -16,32 +23,21 @@ const onCommentAdded = async (req, res) => {
         await product.save();
         const newStateProduct = await Product.findById(productId).populate('comments');
 
-        return res
-            .status(200)
-            .json({
-                message: 'Comment successfully added',
-                comments: newStateProduct.comments
-            })
+        return jsonResponseOnSuccess(res, 200, { comments: newStateProduct.comments, message: 'Comment successfully added' });
     } catch (error) {
-        return res
-            .status(500)
-            .json({ error });
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
-const onGettingAllComments = async (req, res) => {
+const onCommentsGetting = async (req, res) => {
     try {
         const productId = req.params.productId;
 
         const product = await Product.findById(productId).populate('comments');
 
-        return res
-            .status(200)
-            .json({ comments: product.comments });
+        return jsonResponseOnSuccess(res, 200, { comments: product.comments });
     } catch (error) {
-        return res
-            .status(500)
-            .json({ error });
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
@@ -55,20 +51,16 @@ const onCommentRemove = async (req, res) => {
         product.comments.filter(existingCommentId => existingCommentId !== commentId);
         await product.save();
         const newStateProduct = await Product.findById(productId).populate('comments');
-        return res
-            .status(200)
-            .json({
-                message: 'Comment successfully deleted',
-                comments: newStateProduct.comments
-            });
+
+        return jsonResponseOnSuccess(res, 200, { comments: newStateProduct.comments, message: 'Comment successfully deleted' });
     } catch (error) {
-        return res
-            .status(500)
-            .json({ error });
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
+
+
 module.exports = router
-    .get('/product/:productId/comment', onGettingAllComments)
+    .get('/product/:productId/comment', onCommentsGetting)
     .post('/product/:productId/comment', verifyToken, onCommentAdded)
     .delete('/product/:productId/comment/:commentId', verifyToken, onCommentRemove);
