@@ -1,5 +1,7 @@
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const routes = require('./routes');
+
 
 const expressSetup = app => {
 
@@ -21,6 +23,11 @@ const expressSetup = app => {
         next();
     });
 
+    // Setup body parser
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+
+    // Setup routes
     app.use(routes);
 }
 
