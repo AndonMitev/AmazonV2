@@ -2,34 +2,40 @@ const router = require('express').Router();
 const Product = require('mongoose').model('Product');
 const Category = require('mongoose').model('Category');
 const verifyToken = require('../middleware/verify-token');
+const upload = require('../config/multer');
 
-const home = (req, res) => {
-    res.json({ 'test': 'hello' });
+const addImages = (imagesData) => {
+    const imagePaths = [];
+    imagesData.forEach(image => imagePaths.push(image.path));
+    return imagePaths;
+}
+
+const addToCategory = (categories, productId) => {
+    if (!Array.isArray(categories)) {
+        categories = [categories];
+    }
+
+    categories.forEach(async category => {
+        const foundedCategory = await Category.findOne({ name: category });
+
+        if (!foundedCategory) {
+            await Category.create({ name: category, products: productId })
+        } else {
+            foundedCategory.products.push(productId);
+            await foundedCategory.save();
+        }
+    });
 }
 
 const onCreateProduct = async (req, res) => {
     try {
         const owner = req.userData._id;
         const productData = { ...req.body };
-
+        productData.images = addImages(req.files);
         const product = await Product.create({ owner, ...productData });
 
-        let { categories } = productData;
-
-        if (!Array.isArray(categories)) {
-            categories = [categories];
-        }
-
-        categories.forEach(async category => {
-            const foundedCategory = await Category.findOne({ name: category });
-
-            if (!foundedCategory) {
-                await Category.create({ name: category, products: product._id })
-            } else {
-                foundedCategory.products.push(product._id);
-                await foundedCategory.save();
-            }
-        });
+        const { categories } = productData;
+        addToCategory(categories, product._id)
 
         return res.status(201)
             .json({
@@ -56,5 +62,4 @@ const onCreateProduct = async (req, res) => {
 }
 
 module.exports = router
-    .get('/', verifyToken, home)
-    .post('/product/add', verifyToken, onCreateProduct);
+    .post('/product/add', verifyToken, upload.array('images', 10), onCreateProduct);
