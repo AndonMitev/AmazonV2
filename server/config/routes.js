@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const homeServices = require('../controllers/home');
+const homeServices = require('../controllers/product');
 const userServices = require('../controllers/user');
 
 router

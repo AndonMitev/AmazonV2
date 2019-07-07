@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('mongoose').model('User');
 const env = require('../config/envoirment');
 
-
-
 const onSignUp = async (req, res) => {
     const { body: { email, password } } = req;
 
@@ -54,12 +52,12 @@ const onSignIn = async (req, res) => {
         if (isPasswordMatching) {
             const { email, _id } = user;
 
-            const token = await jwt.sign({email, _id}, env.dev.jwtKey, {expiresIn: '2 days'});
+            const encodedToken = await jwt.sign({email, _id}, env.dev.jwtKey, {expiresIn: '2 days'});
 
             return res.status(200)
                 .json({
                     message: 'Authentication successful!',
-                    token
+                    token: encodedToken
                 });
         }
 

@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const env = require('./envoirment');
 mongoose.Promise = global.Promise;
 
-require('../models/ProductModel');
-require('../models/UserModel');
+require('../models/Product');
+require('../models/User');
+require('../models/Category');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
