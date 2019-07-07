@@ -10,7 +10,10 @@ require('../models/Comment');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
-  { useNewUrlParser: true },
+  { 
+    useNewUrlParser: true,
+    useFindAndModify: false
+  },
   err => {
     if (err) {
       console.log(err);
