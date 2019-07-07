@@ -5,6 +5,7 @@ mongoose.Promise = global.Promise;
 require('../models/Product');
 require('../models/User');
 require('../models/Category');
+require('../models/Cart');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
