@@ -61,5 +61,21 @@ const onCreateProduct = async (req, res) => {
     }
 }
 
+const onGettingAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+
+        return res
+            .status(200)
+            .json(products);
+    } catch (error) {
+        console.log(error);
+        return res
+            .status(500)
+            .json({ error });
+    }
+}
+
 module.exports = router
+    .get('/', onGettingAllProducts)
     .post('/product/add', verifyToken, upload.array('images', 10), onCreateProduct);

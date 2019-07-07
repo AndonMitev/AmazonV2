@@ -1,3 +1,4 @@
+const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
@@ -26,6 +27,9 @@ const expressSetup = app => {
     // Setup body parser
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+
+    // Setup static files
+    app.use('/photos', express.static('photos'));
 
     // Setup routes
     app.use(routes);
