@@ -19,7 +19,7 @@ const ProductSchema = new mongoose.Schema({
   discountPercentages: { type: Number, default: 0 },
   likes: [{ type: String, default: [] }],
   views: { type: Number, default: 0 },
-  comments: [{ type: Object, default: [] }],
+  comments: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Comment', default: [] }],
   rating: { type: Number, default: 0 },
   pricesOverTime: [{ type: Number, default: [] }],
 });

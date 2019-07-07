@@ -6,6 +6,7 @@ require('../models/Product');
 require('../models/User');
 require('../models/Category');
 require('../models/Cart');
+require('../models/Comment');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
