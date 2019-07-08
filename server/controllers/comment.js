@@ -9,7 +9,7 @@ const jsonResponseOnError = (res, statusCode, error) =>
 
 
 const jsonResponseOnSuccess = (res, statusCode, data) =>
-    res.status(statusCode).json({ data, message });
+    res.status(statusCode).json(data);
 
 const onCommentAdded = async (req, res) => {
     try {

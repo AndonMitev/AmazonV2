@@ -10,10 +10,10 @@ const jsonResponseOnError = (res, statusCode, error) =>
         .json({ error });
 
 
-const jsonResponseOnSuccess = (res, statusCode, data, message) =>
+const jsonResponseOnSuccess = (res, statusCode, data) =>
     res
         .status(statusCode)
-        .json({ data, message });
+        .json(data);
 
 
 const addImages = (imagesData) => {

@@ -10,7 +10,7 @@ const jsonResponseOnError = (res, statusCode, error) =>
 const jsonResponseOnSuccess = (res, statusCode, data) =>
     res
         .status(statusCode)
-        .json({ data, message });
+        .json(data);
 
 const onCategories = async (req, res) => {
     try {
