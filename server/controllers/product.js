@@ -3,6 +3,7 @@ const Product = require('mongoose').model('Product');
 const Category = require('mongoose').model('Category');
 const verifyToken = require('../middleware/verify-token');
 const upload = require('../config/multer');
+const verifyRole = require('../middleware/verify-role');
 
 const jsonResponseOnError = (res, statusCode, error) =>
     res

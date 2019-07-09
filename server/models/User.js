@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema({
     phone: { type: String },
     boughtProducts: [{ type: objectId, ref: 'Product' }],
     soldProducts: [{ type: objectId, ref: 'Product' }],
+    favProducts: [{type: objectId, ref: 'Product'}],
     tokens: { type: Number, default: 0 },
-    roles: [{type: String, default: 'normal', enum: ['admin', 'normal', 'advanced']}]
+    roles: [{ type: String, default: 'normal', enum: ['admin', 'normal', 'advanced'] }]
 });
 
 module.exports = mongoose.model('User', userSchema);

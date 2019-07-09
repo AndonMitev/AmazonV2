@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema({
   views: { type: Number, default: 0 },
   comments: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Comment', default: [] }],
   rating: { type: Number, default: 0 },
-  pricesOverTime: [{ type: Number, default: [] }],
+  pricesOverTime: [{ price: { type: Number }, time: { type: Date, default: Date.now } }],
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
