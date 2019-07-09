@@ -15,7 +15,7 @@
         <v-text-field v-model="phone" label="Phone" data-vv-name="phone" required></v-text-field>
         <v-layout row justify-end>
           <v-flex offset-md12>
-            <v-btn color="light-green lighten-1">Register</v-btn>
+            <v-btn color="deep-purple ">Register</v-btn>
           </v-flex>
         </v-layout>
       </form>

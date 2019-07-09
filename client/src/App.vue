@@ -8,7 +8,8 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-container>
-      <Register />
+      <!-- <Register /> -->
+      <Products />
     </v-container>
   </v-app>
 </template>
@@ -16,12 +17,14 @@
 <script>
 import HelloWorld from "./components/HelloWorld";
 import Register from "./components/Register";
+import Products from "./components/Products";
 
 export default {
   name: "App",
   components: {
     HelloWorld,
-    Register
+    Register,
+    Products
   },
   data() {
     return {
