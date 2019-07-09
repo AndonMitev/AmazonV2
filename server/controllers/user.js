@@ -50,9 +50,10 @@ const onSignIn = async (req, res) => {
         const isPasswordMatching = await bcrypt.compare(password, user.password);
 
         if (isPasswordMatching) {
-            const { email, _id } = user;
+            const { email, _id, roles } = user;
+            const isAdmin = roles.indexOf('admin') !== -1;
 
-            const encodedToken = await jwt.sign({email, _id}, env.dev.jwtKey, {expiresIn: '2 days'});
+            const encodedToken = await jwt.sign({ email, _id, isAdmin }, env.dev.jwtKey, { expiresIn: '2 days' });
 
             return res.status(200)
                 .json({
