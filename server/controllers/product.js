@@ -17,7 +17,7 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
         .json(data);
 
 
-const addImages = (imagesData) => {
+const addImages = imagesData => {
     const imagePaths = [];
     imagesData.forEach(image => imagePaths.push(image.path));
     return imagePaths;
@@ -71,6 +71,35 @@ const onGettingAllProducts = async (req, res) => {
     }
 }
 
+const onEditProduct = async (req, res) => {
+    try {
+        const userId = req.userData._id;
+        const productId = req.params.productId;
+        const productData = { ...req.body };
+        const product = await Product.findById(productId);
+
+        if (product.owner !== userId) {
+            return jsonResponseOnError(res, 403, { error: 'Not allowed!' });
+        }
+
+        productData.images = [...productData.images, ...addImages(req.files)];
+
+        product = { ...productData };
+        await product.save();
+
+        const { categories } = productData;
+        addToCategory(categories, product._id);
+
+        const newStateOfProduct = await Product.findById(productId);
+
+        return jsonResponseOnSuccess(res, 200, { newStateOfProduct, message: 'Product edited' });
+    } catch (error) {
+        console.log(error);
+        return jsonResponseOnError(res, 500, error);
+    }
+}
+
 module.exports = router
     .get('/', onGettingAllProducts)
-    .post('/product/add', verifyToken, upload.array('images', 10), onCreateProduct);
+    .post('/product/add', verifyToken, upload.array('images', 10), onCreateProduct)
+    .put('/product/edit/:productId', verifyToken, upload.array('images', 10), onEditProduct);
