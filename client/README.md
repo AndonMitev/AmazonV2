@@ -1,4 +1,4 @@
-# client
+# my-store
 
 ## Project setup
 ```

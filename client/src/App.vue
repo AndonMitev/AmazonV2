@@ -1,16 +1,32 @@
 <template>
-  <div class="container">
-    <Register />
-  </div>
+  <v-app dark>
+    <v-toolbar color="deep-purple lighten-1">
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat>Register</v-btn>
+        <v-btn flat>Login</v-btn>
+        <v-btn flat>Products</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+    <v-container>
+      <Register />
+    </v-container>
+  </v-app>
 </template>
 
 <script>
-
-import Register from './components/user/Register';
+import HelloWorld from "./components/HelloWorld";
+import Register from "./components/Register";
 
 export default {
-  name: "AppVue",
-  components: {Register}
+  name: "App",
+  components: {
+    HelloWorld,
+    Register
+  },
+  data() {
+    return {
+      //
+    };
+  }
 };
 </script>
-
