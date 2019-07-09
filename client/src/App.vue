@@ -1,17 +1,16 @@
 <template>
   <div class="container">
-    <HelloWorld/>
+    <Register />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+
+import Register from './components/user/Register';
 
 export default {
   name: "AppVue",
-  components: {
-    HelloWorld
-  }
+  components: {Register}
 };
 </script>
 
