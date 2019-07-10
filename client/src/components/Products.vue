@@ -29,7 +29,7 @@
       </v-flex>
       <v-flex xs12>
         <v-layout row wrap justify-center>
-          <v-flex xs12 md4 lg3 mt-5 mr-5>
+          <v-flex xs12 md4 lg3 mt-5 mx-3>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
@@ -47,7 +47,7 @@
             </v-card>
           </v-flex>
 
-          <v-flex xs12 md4 lg3 mt-5 mr-5>
+          <v-flex xs12 md4 lg3 mt-5 mx-3>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
@@ -65,7 +65,7 @@
             </v-card>
           </v-flex>
 
-          <v-flex xs12 md4 lg3 mt-5 mr-5>
+          <v-flex xs12 md4 lg3 mt-5 mx-3>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
@@ -83,7 +83,7 @@
             </v-card>
           </v-flex>
 
-          <v-flex xs12 md4 lg3 mr-3 mt-5>
+          <v-flex xs12 md4 lg3 mt-5 mx-3>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
