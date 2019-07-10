@@ -1,16 +1,12 @@
 <template>
-  <v-app dark>
-    <v-toolbar color="deep-purple lighten-1">
-      <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat>Register</v-btn>
-        <v-btn flat>Login</v-btn>
-        <v-btn flat>Products</v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-    <v-container>
-      <!-- <Register /> -->
-      <Products />
-    </v-container>
+  <v-app>
+    <SideNav />
+    <v-toolbar app></v-toolbar>
+    <v-content>
+      <v-container fluid>
+        <Products />
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
@@ -18,13 +14,15 @@
 import HelloWorld from "./components/HelloWorld";
 import Register from "./components/Register";
 import Products from "./components/Products";
+import SideNav from "./components/shared/SideNav";
 
 export default {
   name: "App",
   components: {
     HelloWorld,
     Register,
-    Products
+    Products,
+    SideNav
   },
   data() {
     return {
