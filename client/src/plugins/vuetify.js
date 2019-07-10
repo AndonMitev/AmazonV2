@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
-import colors from 'vuetify/es5/util/colors'
-
+import VueGoogleCharts from 'vue-google-charts'
+ 
+Vue.use(VueGoogleCharts)
 Vue.use(Vuetify, {
   iconfont: 'md',
   theme: {
