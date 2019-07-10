@@ -6,9 +6,9 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: [true, 'Password is required'] },
     address: { type: String, required: [true, 'Address is required'] },
     phone: { type: String },
-    boughtProducts: [{ type: objectId, ref: 'Product' }],
-    soldProducts: [{ type: objectId, ref: 'Product' }],
-    favProducts: [{type: objectId, ref: 'Product'}],
+    boughtProducts: [{ type: objectId, ref: 'Product', default: [] }],
+    soldProducts: [{ type: objectId, ref: 'Product', default: [] }],
+    favProducts: [{ type: objectId, ref: 'Product', default: [] }],
     tokens: { type: Number, default: 0 },
     roles: [{ type: String, default: 'normal', enum: ['admin', 'normal', 'advanced'] }]
 });

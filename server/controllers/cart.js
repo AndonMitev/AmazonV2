@@ -61,7 +61,22 @@ const onDeleteCart = async (req, res) => {
     }
 }
 
+const onRemoveItemFromCart = async (req, res) => {
+    try {
+        const productId = req.body;
+        const cartId = req.params.id;
+        const cart = await Cart.findById(cartId);
+        cart.productsId.filter(existingProductId => existingProductId !== productId);
+        await cart.save();
+        const newStateOfCart = await Cart.findById(cartId);
+        return jsonResponseOnSuccess(res, 200, { message: 'Item successfully removed', newStateOfCart });
+    } catch (error) {
+        return jsonResponseOnError(res, 500, error);
+    }
+}
+
 module.exports = router
     .get('/cart', verifyToken, onGettingCart)
     .post('/cart', verifyToken, onAddToCart)
-    .delete('/cart/:cardId', verifyToken, onDeleteCart);
+    .delete('/cart/:cardId', verifyToken, onDeleteCart)
+    .put('/cart/:cardId', verifyToken, onRemoveItemFromCart);
