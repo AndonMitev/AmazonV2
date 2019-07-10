@@ -4,7 +4,7 @@
     <v-toolbar app></v-toolbar>
     <v-content>
       <v-container fluid>
-        <Products />
+        <Details />
       </v-container>
     </v-content>
   </v-app>
@@ -15,6 +15,7 @@ import HelloWorld from "./components/HelloWorld";
 import Register from "./components/Register";
 import Products from "./components/Products";
 import SideNav from "./components/shared/SideNav";
+import Details from './components/Details';
 
 export default {
   name: "App",
@@ -22,7 +23,8 @@ export default {
     HelloWorld,
     Register,
     Products,
-    SideNav
+    SideNav,
+    Details
   },
   data() {
     return {
