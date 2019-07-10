@@ -3,35 +3,33 @@
     <h1 class="text-sm-center">Products</h1>
     <v-layout row>
       <v-flex sm3 mt-5 mr-3>
-        <v-item-group>
-          <v-list>
-            <v-list-tile-content>
-              <v-list-tile-title class="text-sm-center">Categories</v-list-tile-title>
-              <v-list-tile>
-                <p>test1</p>
-              </v-list-tile>
-              <v-list-tile>
-                <p>test1</p>
-              </v-list-tile>
-              <v-list-tile>
-                <p>test1</p>
-              </v-list-tile>
-              <v-list-tile>
-                <p>test1</p>
-              </v-list-tile>
-              <v-list-tile>
-                <p>test1</p>
-              </v-list-tile>
-              <v-list-tile>
-                <p>test1</p>
-              </v-list-tile>
-            </v-list-tile-content>
-          </v-list>
-        </v-item-group>
+        <v-list>
+          <v-list-tile-content>
+            <v-list-tile-title class="text-sm-center">Categories</v-list-tile-title>
+            <v-list-tile>
+              <p>test1</p>
+            </v-list-tile>
+            <v-list-tile>
+              <p>test1</p>
+            </v-list-tile>
+            <v-list-tile>
+              <p>test1</p>
+            </v-list-tile>
+            <v-list-tile>
+              <p>test1</p>
+            </v-list-tile>
+            <v-list-tile>
+              <p>test1</p>
+            </v-list-tile>
+            <v-list-tile>
+              <p>test1</p>
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list>
       </v-flex>
       <v-flex xs12>
         <v-layout row wrap justify-center>
-          <v-flex md3 mt-5 mr-5>
+          <v-flex xs12 md4 lg3 mt-5 mr-5>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
@@ -49,7 +47,7 @@
             </v-card>
           </v-flex>
 
-          <v-flex md3 mt-5 mr-5>
+          <v-flex xs12 md4 lg3 mt-5 mr-5>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
@@ -67,7 +65,7 @@
             </v-card>
           </v-flex>
 
-          <v-flex xs12 md3 mt-5 mr-5>
+          <v-flex xs12 md4 lg3 mt-5 mr-5>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
@@ -85,7 +83,7 @@
             </v-card>
           </v-flex>
 
-          <v-flex xs12 md3 mr-3 mt-5>
+          <v-flex xs12 md4 lg3 mr-3 mt-5>
             <v-card>
               <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
 
