@@ -30,10 +30,12 @@ export default {
   data: function() {
     return {
       items: [
-        { icon: 'home', title: "Home" },
+        { icon: "home", title: "Home" },
         { icon: "group_add", title: "Register" },
         { icon: "person", title: "Login" },
-        { icon: "reorder", title: "Categories" }
+        { icon: "reorder", title: "Categories" },
+        { icon: "person", title: "Profile" },
+        { icon: "escape", title: "Logout" }
       ]
     };
   }

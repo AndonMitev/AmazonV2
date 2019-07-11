@@ -108,7 +108,7 @@
       </v-flex>
       <v-flex xs12>
         <div >
-          <v-btn offset-md10 color="primary">Send</v-btn>
+          <v-btn reverse color="primary">Send</v-btn>
         </div>
       </v-flex>
     </v-layout>
