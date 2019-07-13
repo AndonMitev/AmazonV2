@@ -3,12 +3,12 @@
     <v-flex xs12 md10>
       <h1 class="text-xs-center display-3 mb-2">Register</h1>
       <v-divider class="mb-5"></v-divider>
-      <form>
+      <v-form ref="form" @submit.prevent="onSubmit" lazy-validation>
         <v-layout row wrap justify-space-around>
           <v-flex xs12 md5>
             <v-text-field
               color="primary"
-              v-model="firstName"
+              v-model="userData.firstName"
               prepend-icon="person"
               label="First name"
               :rules="[firstNameRules]"
@@ -17,7 +17,7 @@
           <v-flex xs12 md5>
             <v-text-field
               color="primary"
-              v-model="lastName"
+              v-model="userData.lastName"
               prepend-icon="person"
               label="Last name"
               :rules="[lastNameRules]"
@@ -29,16 +29,15 @@
           <v-flex xs12 md5>
             <v-text-field
               color="primary"
-              v-model="email"
+              v-model="userData.email"
               prepend-icon="email"
               :rules="[...emailRules]"
               label="Email"
-              required
             ></v-text-field>
           </v-flex>
           <v-flex xs12 md5>
             <v-text-field
-              v-model="confirmEmail"
+              v-model="userData.confirmEmail"
               label="Confirm Email"
               prepend-icon="email"
               :rules="[compareEmails]"
@@ -49,16 +48,17 @@
         <v-layout row wrap justify-space-around>
           <v-flex xs12 md5>
             <v-text-field
-              v-model="password"
+              type="password"
+              v-model="userData.password"
               label="Password"
               prepend-icon="lock"
               :rules="[...passwordRules]"
-              required
             ></v-text-field>
           </v-flex>
           <v-flex xs12 md5>
             <v-text-field
-              v-model="confirmPassword"
+              type="password"
+              v-model="userData.confirmPassword"
               label="Confirm password"
               :rules="[comparePasswords]"
               prepend-icon="lock"
@@ -69,52 +69,58 @@
         <v-layout row wrap justify-space-around>
           <v-flex xs12 md5>
             <v-text-field
-              v-model="address"
+              v-model="userData.address"
               label="Address"
               prepend-icon="account_balance"
               :rules="[...addressRules]"
-              required
             ></v-text-field>
           </v-flex>
           <v-flex xs12 md5>
             <v-text-field
-              v-model="phone"
+              v-model="userData.phone"
               label="Phone"
               prepend-icon="call"
               :rules="[phoneRules]"
-              required
             ></v-text-field>
           </v-flex>
         </v-layout>
-      </form>
-      <v-layout align-center justify-end row mt-5 mr-5>
-        <v-btn color="orange lighten-1">
+        <v-btn type="submit" xs12 md2 color="orange lighten-1">
           <v-icon left>error_outline</v-icon>
           <span>Reset</span>
         </v-btn>
-        <v-btn color="blue lighten-1">Submit</v-btn>
-      </v-layout>
+        <v-btn type="submit" xs12 md2 color="blue lighten-1">
+          <v-icon left>check_circle</v-icon>
+          <span>Submit</span>
+        </v-btn>
+      </v-form>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import registerRules from "../services/register-rules";
+import registerRules from '../../services/register-rules';
 
 export default {
-  name: "Register",
+  name: 'Register',
   data: () => ({
-    firstName: "",
-    lastName: "",
-    email: "",
-    confirmEmail: "",
-    password: "",
-    confirmPassword: "",
-    address: "",
-    phone: ""
+    userData: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      confirmEmail: '',
+      password: '',
+      confirmPassword: '',
+      address: '',
+      phone: ''
+    }
   }),
   computed: {
     ...registerRules
+  },
+  methods: {
+    onSubmit() {
+      console.log(this.$refs.form.validate());
+    }
   }
 };
 </script>
