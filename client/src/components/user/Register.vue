@@ -99,6 +99,7 @@
 
 <script>
 import registerRules from '../../services/register-rules';
+import userServices from '../../services/user';
 
 export default {
   name: 'Register',
@@ -118,8 +119,11 @@ export default {
     ...registerRules
   },
   methods: {
-    onSubmit() {
-      console.log(this.$refs.form.validate());
+    async onSubmit() {
+      if (this.$refs.form.validate()) {
+        const { confirmEmail, confirmPassword, ...rest } = this.userData;
+        await userServices.register(rest);
+      }
     }
   }
 };

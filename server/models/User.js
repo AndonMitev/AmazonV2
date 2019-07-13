@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: [true, 'Password is required'] },
     address: { type: String, required: [true, 'Address is required'] },
     phone: { type: String },
+    firstName: {type: String, required: [true, 'First name is required']},
+    lastName: {type: String, required: [true, 'First name is required']},
     boughtProducts: [{ type: objectId, ref: 'Product', default: [] }],
     soldProducts: [{ type: objectId, ref: 'Product', default: [] }],
     favProducts: [{ type: objectId, ref: 'Product', default: [] }],

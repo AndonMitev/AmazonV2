@@ -5,7 +5,7 @@ const User = require('mongoose').model('User');
 const env = require('../config/envoirment');
 
 const onSignUp = async (req, res) => {
-    const { body: { email, password, role } } = req;
+    const { body: { email, password, role, address, firstName, lastName } } = req;
 
     try {
         const isExistingUser = await User.findOne({ email });
@@ -18,7 +18,8 @@ const onSignUp = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ email, password: hashedPassword, roles: role });
+        const user = await User
+            .create({ email, password: hashedPassword, roles: role, address, firstName, lastName });
 
         return res.status(201)
             .json({
@@ -53,7 +54,7 @@ const onSignIn = async (req, res) => {
             const { email, _id, roles } = user;
             const isAdmin = roles.indexOf('admin') !== -1;
 
-            const encodedToken = await jwt.sign({email, _id, isAdmin}, env.dev.jwtKey, {expiresIn: '2 days'});
+            const encodedToken = await jwt.sign({ email, _id, isAdmin }, env.dev.jwtKey, { expiresIn: '2 days' });
 
             return res.status(200)
                 .json({
