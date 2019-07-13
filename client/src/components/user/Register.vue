@@ -84,7 +84,7 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
-        <v-btn type="submit" xs12 md2 color="orange lighten-1">
+        <v-btn type="reset" xs12 md2 color="orange lighten-1">
           <v-icon left>error_outline</v-icon>
           <span>Reset</span>
         </v-btn>

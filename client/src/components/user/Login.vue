@@ -3,41 +3,51 @@
     <v-flex xs12 sm6>
       <h1 class="text-xs-center display-3 mb-2">Login</h1>
       <v-divider class="mb-5"></v-divider>
-      <form>
+      <v-form ref="form" @submit.prevent="onSubmit">
         <v-text-field
+          type="text"
           label="Email"
           prepend-icon="email"
-          v-model="username"
+          v-model="userData.email"
           :rules="[usernameRules]"
         ></v-text-field>
         <v-text-field
+          type="password"
           prepend-icon="lock"
           label="Password"
-          v-model="password"
+          v-model="userData.password"
           :rules="[passwordRules]"
         ></v-text-field>
-      </form>
-      <v-layout align-center justify-center row mt-2 mr-5>
-        <v-btn xs12 md2 color="blue lighten-1">
+        <v-btn type="submit" xs12 md2 color="blue lighten-1">
           <v-icon left>check_circle</v-icon>
           <span>Login</span>
         </v-btn>
-      </v-layout>
+      </v-form>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import loginRules from '../services/login-rules';
+import loginRules from '../../services/login-rules';
+import userServices from '../../services/user';
 
 export default {
   name: 'Login',
   data: () => ({
-    username: '',
-    password: ''
+    userData: {
+      email: '',
+      password: ''
+    }
   }),
   computed: {
     ...loginRules
+  },
+  methods: {
+    async onSubmit() {
+      if (this.$refs.form.validate()) {
+        await userServices.login({ ...this.userData });
+      }
+    }
   }
 };
 </script>

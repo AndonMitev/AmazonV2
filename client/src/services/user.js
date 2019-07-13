@@ -5,7 +5,7 @@ export default (() => {
     axios.defaults.baseURL = baseUrl;
     const routes = {
         signup: '/signup',
-        login: '/signin'
+        signin: '/signin'
     }
 
     const register = async userData => {
@@ -13,7 +13,7 @@ export default (() => {
     }
 
     const login = async userData => {
-        return await axios.post(baseUrl + routes.signup, userData);
+        return await axios.post(baseUrl + routes.signin, userData);
     }
 
     return {

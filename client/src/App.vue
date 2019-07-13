@@ -4,24 +4,22 @@
     <v-toolbar app></v-toolbar>
     <v-content>
       <v-container fluid>
-        <Register />
+        <Details />
       </v-container>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
-import Register from "./components/user/Register";
-import Products from "./components/Products";
-import SideNav from "./components/shared/SideNav";
-import Details from "./components/Details";
-import Login from "./components/Login";
+import Register from './components/user/Register';
+import Products from './components/Product/Products';
+import SideNav from './components/shared/SideNav';
+import Details from './components/Product/Details';
+import Login from './components/user/Login';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    HelloWorld,
     Register,
     Products,
     SideNav,
