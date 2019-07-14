@@ -3,8 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import product from './store/product';
+
 export default new Vuex.Store({
   modules: {
-    // user
+    product
   }
 })

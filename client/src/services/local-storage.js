@@ -16,9 +16,8 @@ export default (() => {
         localStorage.removeItem(key);
     }
 
-    const setUserData = userData => {
-        const token = userData.token;
-        const email = userData.email;
+    const setUserData = user => {
+        const { token, email } = user.data;
 
         setLsStorage({ key: 'token', value: token });
         setLsStorage({ key: 'email', value: email });

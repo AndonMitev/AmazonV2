@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="mb-5">
-      <h3 class="display-2 font-weight-light font-italic">Summer sales</h3>
-      <v-divider></v-divider>
+      <PageTitle :title="'Available products'" />
       <v-layout row wrap justify-start mt-3>
         <v-flex xs12 sm6 md3 mb-4 mr-5 offset-md1>
           <v-card>
@@ -394,8 +393,11 @@
 </template>
 
 <script>
+import PageTitle from '../shared/PageTitle';
+
 export default {
-  name: 'Products'
+  name: 'Products',
+  components: { PageTitle }
 };
 </script>
 

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import loginRules from '../../services/login-rules';
+import loginRules from '../../services/rules/login';
 import userServices from '../../services/user';
 import lsServices from '../../services/local-storage';
 

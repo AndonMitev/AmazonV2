@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import registerRules from '../../services/register-rules';
+import registerRules from '../../services/rules/register';
 import userServices from '../../services/user';
 
 export default {

@@ -6,7 +6,7 @@ const baseUrl = 'http://localhost:7000';
 axios.interceptors.request.use(request => {
     if (request.url !== '/signin' || request.url !== '/signup') {
         const token = lsService.getLsStorage('token');
-        request.headers.Authorization = token ? `Bearer + ${token}` : '';
+        request.headers.Authorization = token ? `Bearer ${token}` : '';
     }
     return request;
 })
