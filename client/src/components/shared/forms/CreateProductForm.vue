@@ -11,7 +11,7 @@
           :rules="[qualityRules]"
         />
         <v-radio-group row v-model="product.state" :rules="[stateRules]">
-          <label class="mr-5">Product condition:</label>
+          <label class="mr-5">Condition:</label>
           <v-radio
             class="text-capitalize"
             v-for="state in product.availableStates"
@@ -26,7 +26,7 @@
           v-model="product.description"
           :rules="[descriptionRules]"
         />
-        <v-btn type="submit">Submit</v-btn>
+        <v-btn type="submit" color="primary">Next</v-btn>
       </v-form>
     </v-flex>
   </v-layout>

@@ -2,7 +2,8 @@
   <div>
     <Stepper :step="step" />
     <PageTitle :title="'Create a product'" />
-    <CreateProductForm @onFormSubmited="setInStore" />
+    <CreateProductForm v-if="step === 1" @onFormSubmited="createProduct" />
+    <Categories v-else-if="step === 2" @onAddedCategories="addCategories" />
   </div>
 </template>
 
@@ -10,20 +11,27 @@
 import Stepper from '../shared/Stepper';
 import PageTitle from '../shared/PageTitle';
 import CreateProductForm from '../shared/forms/CreateProductForm';
-import { mapActions } from 'vuex';
+import Categories from '../shared/forms/Categories';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'CreateProduct',
-  data: () => ({
-    step: 1
-  }),
+  computed: {
+    ...mapGetters(['step'])
+  },
   methods: {
-    ...mapActions(['setProduct']),
-    setInStore(product) {
-      this.setProduct(product);
+    ...mapActions(['getCurrentStep', 'completeStepOne']),
+    createProduct(product) {
+      this.completeStepOne({ product, currentStep: 1 });
+    },
+    addCategories(categories) {
+      console.log(this.step);
     }
   },
-  components: { Stepper, PageTitle, CreateProductForm }
+  mounted() {
+    this.getCurrentStep();
+  },
+  components: { Stepper, PageTitle, CreateProductForm, Categories }
 };
 </script>
 

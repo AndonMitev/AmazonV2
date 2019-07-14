@@ -45,7 +45,13 @@ const onCreateProduct = async (req, res) => {
         const owner = req.userData._id;
         const productData = { ...req.body };
         const product = await Product.create({ owner, ...productData });
-        return jsonResponseOnSuccess(res, 201, { product, message: 'Product added' });
+        const { name, quantity, price, description, state, _id } = product;
+
+        return jsonResponseOnSuccess(res, 201,
+            {
+                product: { name, quantity, price, description, state, _id },
+                message: 'Product added'
+            });
     } catch (error) {
         if (error.errors && error.errors.state) {
             return jsonResponseOnError(res, 400, error.errors.state.message);

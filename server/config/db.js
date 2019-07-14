@@ -7,10 +7,12 @@ require('../models/User');
 require('../models/Category');
 require('../models/Cart');
 require('../models/Comment');
+require('../models/CreatingPhases');
+require('../models/TempProduct');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
-  { 
+  {
     useNewUrlParser: true,
     useFindAndModify: false
   },
