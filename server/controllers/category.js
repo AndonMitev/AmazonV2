@@ -13,7 +13,7 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
         .status(statusCode)
         .json(data);
 
-const onCategories = async (req, res) => {
+const getCategories = async (req, res) => {
     try {
         const categories = Category
             .find();
@@ -24,7 +24,7 @@ const onCategories = async (req, res) => {
     }
 }
 
-const onCategoryByName = async (req, res) => {
+const getCategoryByName = async (req, res) => {
     try {
         const { params: { name } } = req;
 
@@ -38,9 +38,9 @@ const onCategoryByName = async (req, res) => {
     }
 }
 
-const onAddingNewCategory = async (req, res) => {
+const addNewCategory = async (req, res) => {
     try {
-        const name = req.body;
+        const name = req.body.name;
         await Category.create({ name });
 
         return jsonResponseOnSuccess(res, 201, ({ message: 'Created' }));
@@ -49,7 +49,29 @@ const onAddingNewCategory = async (req, res) => {
     }
 }
 
+const addProductToCategories = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const categories = req.body.categories;
+
+        if (!Array.isArray(categories)) {
+            categories = [categories];
+        }
+
+        categories.forEach(async category => {
+            const foundedCategory = await Category.findOne({ name: category });
+            foundedCategory.products.push(productId);
+            await foundedCategory.save();
+        });
+
+        return jsonResponseOnSuccess(res, 201, ({ message: 'Product successfully added.' }));
+    } catch (error) {
+        return jsonResponseOnError(500, error);
+    }
+}
+
 module.exports = router
-    .get('/categories', onCategories)
-    .get('/categories/:name', onCategoryByName)
-    .post('/categories/add', verifyToken, onAddingNewCategory)
+    .get('/categories', getCategories)
+    .get('/categories/:name', getCategoryByName)
+    .post('/categories/add', verifyToken, addNewCategory)
+    .put('/categories/add/productId', verifyToken, addProductToCategories)

@@ -23,33 +23,28 @@ const addImages = imagesData => {
     return imagePaths;
 }
 
-const addToCategory = (categories, productId) => {
-    if (!Array.isArray(categories)) {
-        categories = [categories];
-    }
+// const addToCategory = (categories, productId) => {
+//     if (!Array.isArray(categories)) {
+//         categories = [categories];
+//     }
 
-    categories.forEach(async category => {
-        const foundedCategory = await Category.findOne({ name: category });
+//     categories.forEach(async category => {
+//         const foundedCategory = await Category.findOne({ name: category });
 
-        if (!foundedCategory) {
-            await Category.create({ name: category, products: productId })
-        } else {
-            foundedCategory.products.push(productId);
-            await foundedCategory.save();
-        }
-    });
-}
+//         if (!foundedCategory) {
+//             await Category.create({ name: category, products: productId })
+//         } else {
+//             foundedCategory.products.push(productId);
+//             await foundedCategory.save();
+//         }
+//     });
+// }
 
 const onCreateProduct = async (req, res) => {
     try {
         const owner = req.userData._id;
         const productData = { ...req.body };
-        productData.images = addImages(req.files);
         const product = await Product.create({ owner, ...productData });
-
-        const { categories } = productData;
-        addToCategory(categories, product._id)
-
         return jsonResponseOnSuccess(res, 201, { product, message: 'Product added' });
     } catch (error) {
         if (error.errors && error.errors.state) {
