@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Category = require('mongoose').model('Category');
+const verifyToken = require('../middleware/verify-token');
 
 const jsonResponseOnError = (res, statusCode, error) =>
     res
@@ -37,6 +38,18 @@ const onCategoryByName = async (req, res) => {
     }
 }
 
+const onAddingNewCategory = async (req, res) => {
+    try {
+        const name = req.body;
+        await Category.create({ name });
+
+        return jsonResponseOnSuccess(res, 201, ({ message: 'Created' }));
+    } catch (error) {
+        return jsonResponseOnError(500, error);
+    }
+}
+
 module.exports = router
     .get('/categories', onCategories)
     .get('/categories/:name', onCategoryByName)
+    .post('/categories/add', verifyToken, onAddingNewCategory)

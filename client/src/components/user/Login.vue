@@ -11,6 +11,7 @@
           v-model="userData.email"
           :rules="[usernameRules]"
         ></v-text-field>
+
         <v-text-field
           type="password"
           prepend-icon="lock"
@@ -18,6 +19,7 @@
           v-model="userData.password"
           :rules="[passwordRules]"
         ></v-text-field>
+
         <v-btn type="submit" xs12 md2 color="blue lighten-1">
           <v-icon left>check_circle</v-icon>
           <span>Login</span>
@@ -30,6 +32,7 @@
 <script>
 import loginRules from '../../services/login-rules';
 import userServices from '../../services/user';
+import lsServices from '../../services/local-storage';
 
 export default {
   name: 'Login',
@@ -45,7 +48,11 @@ export default {
   methods: {
     async onSubmit() {
       if (this.$refs.form.validate()) {
-        await userServices.login({ ...this.userData });
+        try {
+          const userMetadata = await userServices.login({ ...this.userData });
+          lsServices.setUserData(userMetadata);
+          this.$toastr.success('Message', 'Title');
+        } catch (error) {}
       }
     }
   }

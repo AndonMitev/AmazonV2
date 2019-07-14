@@ -5,8 +5,8 @@ const ProductSchema = new mongoose.Schema({
   // Required
   owner: { type: mongoose.SchemaTypes.ObjectId, ref: 'User', required: [true, message.owner] },
   name: { type: String, required: [true, message.name.required], minlength: [3, message.name.minLength], maxlength: [18, message.name.maxLength] },
-  categories: [{ type: String, required: [true, message.categories] }],
-  images: [{ type: String, required: [true, message.images] }],
+  categories: [{ type: String, enum: [...message.categories], required: [true, message.categories] }],
+  images: [{ type: String, default: [] }],
   price: { type: Number, required: [true, message.price.required], min: [0.00001, message.price.minPrice] },
   description: { type: String, required: [true, message.description] },
   quantity: { type: Number, required: [true, message.quantity.required], min: [1, message.quantity.minNumber] },

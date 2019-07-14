@@ -18,5 +18,32 @@ module.exports = {
     required: requiredMessage('Quantity'),
     minNumber: 'Add at least 1 piece of the current item'
   },
-  state: requiredMessage('State')
+  state: requiredMessage('State'),
+  categories: [
+    'Books',
+    'Movies',
+    'TV',
+    'Music',
+    'Games',
+    'Electronics',
+    'Computers',
+    'Home',
+    'Garden',
+    'Pets',
+    'Beauty',
+    'Health',
+    'Grocery',
+    'Toys',
+    'Children',
+    'Baby',
+    'Apparel',
+    'Shoes',
+    'Watches',
+    'Sports',
+    'Outdoors',
+    'Automotive',
+    'Motorcycle',
+    'Industrial',
+    'Handmade'
+  ]
 };
