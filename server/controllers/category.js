@@ -57,7 +57,7 @@ const addProductToCategories = async (req, res) => {
         if (!Array.isArray(categories)) {
             categories = [categories];
         }
-        console.log(categories)
+
         categories.forEach(async category => {
             const foundedCategory = await Category.findOne({ name: category });
             if (foundedCategory) {
