@@ -19,7 +19,7 @@ module.exports = {
     minNumber: 'Add at least 1 piece of the current item'
   },
   state: requiredMessage('State'),
-  categories: [
+  availableCategories: [
     'Books',
     'Movies',
     'TV',

@@ -20,7 +20,7 @@ const getCategories = async (req, res) => {
 
         return jsonResponseOnSuccess(res, 200, { categories });
     } catch (error) {
-        return jsonResponseOnError(500, error);
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
@@ -34,7 +34,7 @@ const getCategoryByName = async (req, res) => {
 
         return jsonResponseOnSuccess(res, 200, { category });
     } catch (error) {
-        return jsonResponseOnError(500, error);
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
@@ -45,33 +45,37 @@ const addNewCategory = async (req, res) => {
 
         return jsonResponseOnSuccess(res, 201, ({ message: 'Created' }));
     } catch (error) {
-        return jsonResponseOnError(500, error);
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
 const addProductToCategories = async (req, res) => {
     try {
-        const productId = req.params.id;
-        const categories = req.body.categories;
+        const productId = req.params.productId;
+        let categories = req.body.categories;
 
         if (!Array.isArray(categories)) {
             categories = [categories];
         }
-
+        console.log(categories)
         categories.forEach(async category => {
             const foundedCategory = await Category.findOne({ name: category });
-            foundedCategory.products.push(productId);
-            await foundedCategory.save();
+            if (foundedCategory) {
+                foundedCategory.products.push(productId);
+                await foundedCategory.save();
+            }
+
         });
 
         return jsonResponseOnSuccess(res, 201, ({ message: 'Product successfully added.' }));
     } catch (error) {
-        return jsonResponseOnError(500, error);
+        console.log(error);
+        return jsonResponseOnError(res, 500, error);
     }
 }
 
 module.exports = router
     .get('/categories', getCategories)
     .get('/categories/:name', getCategoryByName)
+    .put('/categories/add/:productId', verifyToken, addProductToCategories)
     .post('/categories/add', verifyToken, addNewCategory)
-    .put('/categories/add/productId', verifyToken, addProductToCategories)
