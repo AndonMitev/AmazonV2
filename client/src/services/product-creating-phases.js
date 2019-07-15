@@ -7,7 +7,8 @@ export default (() => {
 
     const routes = {
         step: '/step',
-        complete: '/step/complete'
+        firstComplete: '/step/first/complete',
+        secondComplete: '/step/second/complete'
     }
 
     const getCurrentStep = async () => {
@@ -15,13 +16,18 @@ export default (() => {
         return await axios.post(routes.step, userId);
     }
 
-    const completeStep = async data => {
-        return await axios.post(routes.complete, data);
+    const completeFirstStep = async data => {
+        return await axios.post(routes.firstComplete, data);
+    }
+
+    const completeSecondStep = async data => {
+        return await axios.post(routes.secondComplete, data);
     }
 
     return {
         getCurrentStep,
-        completeStep
+        completeFirstStep,
+        completeSecondStep
     }
 
 })();

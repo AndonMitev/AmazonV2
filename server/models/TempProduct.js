@@ -7,6 +7,8 @@ const tempProductSchema = new mongoose.Schema({
     quantity: { type: Number, required: true },
     state: { type: String, required: true },
     description: { type: String, required: true },
+    categories: [{ type: String, default: [] }],
+    images: [{ type: String, default: [] }]
 });
 
 module.exports = mongoose.model('TempProduct', tempProductSchema);

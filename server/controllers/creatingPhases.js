@@ -15,7 +15,7 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
         .status(statusCode)
         .json(data);
 
-const completeStep = async (req, res) => {
+const completeFirstStep = async (req, res) => {
     try {
         const userId = req.userData._id;
         const { name, price, quantity, state, description } = req.body.product;
@@ -37,6 +37,7 @@ const completeStep = async (req, res) => {
             userId,
             tempProductId: tempProduct._id,
         });
+
         return jsonResponseOnSuccess(res, 201, {
             currentPhase,
             tempProduct,
@@ -49,6 +50,36 @@ const completeStep = async (req, res) => {
     }
 }
 
+const completeSecondStep = async (req, res) => {
+    try {
+        const userId = req.userData._id;
+        const categories = req.body.categories;
+        let currentStep = req.body.step;
+
+        const currentPhase = await CreatingPhases.findOne({ userId })
+        const productId = currentPhase.tempProductId;
+
+        const product = await TempProduct.findById(productId);
+        product.categories = [... new Set([...product.categories, ...categories])];
+        await product.save();
+
+        ++currentStep;
+        currentPhase.currentStep = currentStep;
+
+        await currentPhase.save();
+
+        return jsonResponseOnSuccess(res, 201, {
+            currentStep,
+            message: 'Categories successfully added!'
+        });
+
+    } catch (error) {
+        console.log(error);
+        return jsonResponseOnError(res, 500, { error });
+    }
+
+}
+
 const getStateForStep = async (req, res) => {
     try {
         const userId = req.userData._id;
@@ -59,7 +90,8 @@ const getStateForStep = async (req, res) => {
         if (!currentPhase) {
             return jsonResponseOnSuccess(res, 200, { currentPhase: { currentStep: 1 } });
         } else {
-            return jsonResponseOnSuccess(res, 200, { currentPhase });
+            const product = currentPhase.tempProductId;
+            return jsonResponseOnSuccess(res, 200, { currentPhase, product });
         }
     } catch (error) {
         return jsonResponseOnError(res, 500, { error });
@@ -67,5 +99,6 @@ const getStateForStep = async (req, res) => {
 }
 
 module.exports = router
-    .post('/step/complete', verifyToken, completeStep)
+    .post('/step/first/complete', verifyToken, completeFirstStep)
+    .post('/step/second/complete', verifyToken, completeSecondStep)
     .post('/step', verifyToken, getStateForStep);

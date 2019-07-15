@@ -17,15 +17,15 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'CreateProduct',
   computed: {
-    ...mapGetters(['step'])
+    ...mapGetters(['step', 'tempProduct'])
   },
   methods: {
-    ...mapActions(['getCurrentStep', 'completeStepOne']),
+    ...mapActions(['getCurrentStep', 'completeFirstStep', 'completeSecondStep']),
     createProduct(product) {
-      this.completeStepOne({ product, currentStep: 1 });
+      this.completeFirstStep({ product, currentStep: 1 });
     },
     addCategories(categories) {
-      console.log(this.step);
+      this.completeSecondStep({categories, step: this.step});
     }
   },
   mounted() {

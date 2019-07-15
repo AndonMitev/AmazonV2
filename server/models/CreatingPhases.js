@@ -3,7 +3,7 @@ const objectId = mongoose.SchemaTypes.ObjectId;
 
 const creatingPhasesSchema = new mongoose.Schema({
     currentStep: { type: Number, default: 1, required: true },
-    tempProductId: { type: objectId, ref: 'Product' },
+    tempProductId: { type: objectId, ref: 'TempProduct' },
     userId: { type: objectId, ref: 'User', required: true }
 });
 

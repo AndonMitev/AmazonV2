@@ -1,36 +1,47 @@
 import creatingPhasesServices from '../services/product-creating-phases';
 
 const state = {
-    // tempProduct: {
-    //     name: '',
-    //     price: 0,
-    //     quantity: 0,
-    //     description: '',
-    //     state: ''
-    // },
+    tempProduct: {
+        name: '',
+        price: 0,
+        quantity: 0,
+        description: '',
+        state: '',
+        categories: [],
+        images: []
+    },
     currentStep: 1
 };
 
 const actions = {
-    async completeStepOne({ commit }, { product, currentStep }) {
-        const response = await creatingPhasesServices.completeStep({ product, currentStep });
-        commit('setStateAfterStepOne', response.data.currentStep)
-    },
-
     async getCurrentStep({ commit }) {
         const response = await creatingPhasesServices.getCurrentStep();
         const currentStep = response.data.currentPhase.currentStep;
-        commit('setStateOnRefresh', currentStep)
+        const product = response.data.product;
+        commit('setCurrentStep', currentStep);
+        commit('setProduct', product);
+    },
+
+    async completeFirstStep({ commit }, { product, currentStep }) {
+        const response = await creatingPhasesServices.completeFirstStep({ product, currentStep });
+        commit('setCurrentStep', response.data.currentStep)
+    },
+
+    async completeSecondStep({ commit }, { categories, step }) {
+        const response = await creatingPhasesServices.completeSecondStep({ categories, step });
+        const currentStep = response.data.currentStep;
+        commit('setCurrentStep', currentStep)
     }
 };
 
 const mutations = {
-    setStateAfterStepOne: (state, currentStep) => state.currentStep = currentStep,
-    setStateOnRefresh: (state, currentStep) => state.currentStep = currentStep
+    setCurrentStep: (state, currentStep) => state.currentStep = currentStep,
+    setProduct: (state, product) => state.tempProduct = product
 };
 
 const getters = {
-    step: state => state.currentStep
+    step: state => state.currentStep,
+    tempProduct: state => state.tempProduct
 };
 
 export default {
