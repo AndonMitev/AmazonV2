@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 const CreatingPhases = mongoose.model('CreatingPhases');
 const TempProduct = mongoose.model('TempProduct');
 const verifyToken = require('../middleware/verify-token');
-const upload = require('../config/multer');
-const fs = require('fs');
-const aws = require('aws-sdk');
+const upload = require('../aws-config');
+
 
 
 
@@ -20,10 +19,10 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
         .status(statusCode)
         .json(data);
 
-const getImagesPaths = imagesData => {
-    const imagePaths = [];
-    imagesData.forEach(image => imagePaths.push(image.path));
-    return imagePaths;
+const getImagesLocation = imagesData => {
+    const imagesLocation = [];
+    imagesData.forEach(image => imagesLocation.push(image.location));
+    return imagesLocation;
 }
 
 const completeFirstStep = async (req, res) => {
@@ -111,40 +110,25 @@ const getStateForStep = async (req, res) => {
 
 const completeThirdStep = async (req, res) => {
     try {
-        const s3 = new aws.S3();
         const userId = req.userData._id;
         const images = req.files;
-        let s3res;
+        const currentPhase = await CreatingPhases.findOne({ userId });
+        const productId = currentPhase.tempProductId;
+        const product = await TempProduct.findById(productId);
 
-        req.files.forEach(file => {
-            s3res = await s3.upload({
-                Bucket: 'testmystore',
-                Key: file.filename,
-               // Body: 
-               ACL: 'public-read'
-            })
-        })
+        product.images = [...product.images, ...getImagesLocation(images)];
 
-
-
-        const productData = await CreatingPhases.findOne({ userId })
-            .populate('tempProductId');
-
-        productData.tempProductId.images = [...productData.tempProductId.images, ...getImagesPaths(images)];
-        productData.currentStep++;
-
-        await productData.save();
+        await product.save();
+        await currentPhase.save();
 
         const productNewState = await CreatingPhases.findOne({ userId })
             .populate('tempProductId');
 
         return jsonResponseOnSuccess(res, 200, { productNewState });
     } catch (error) {
-        console.log(error);
         return jsonResponseOnError(res, 500, { message: 'Something went wrong with upload on images' });
     }
 }
-
 
 
 module.exports = router
