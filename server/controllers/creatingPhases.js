@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const CreatingPhases = mongoose.model('CreatingPhases');
 const TempProduct = mongoose.model('TempProduct');
 const verifyToken = require('../middleware/verify-token');
+const upload = require('../config/multer');
 
 const jsonResponseOnError = (res, statusCode, error) =>
     res
@@ -14,6 +15,12 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
     res
         .status(statusCode)
         .json(data);
+
+const addImages = imagesData => {
+    const imagePaths = [];
+    imagesData.forEach(image => imagePaths.push(image.path));
+    return imagePaths;
+}
 
 const completeFirstStep = async (req, res) => {
     try {
@@ -98,7 +105,33 @@ const getStateForStep = async (req, res) => {
     }
 }
 
+const completeThirdStep = async (req, res) => {
+    try {
+        const userId = req.userData._id;
+        const images = req.files;
+
+        const productData = await CreatingPhases.findOne({ userId })
+            .populate('tempProductId');
+        productData.tempProductId.images = [...productData.tempProductId.images, ...addImages(images)];
+
+        productData.currentStep++;
+
+        await productData.save();
+
+        const productNewState = await CreatingPhases.findOne({ userId })
+            .populate('tempProductId');
+
+        return jsonResponseOnSuccess(res, 200, { productNewState });
+    } catch (error) {
+        console.log(error);
+        return jsonResponseOnError(res, 500, { message: 'Something went wrong with upload on images' });
+    }
+}
+
+
+
 module.exports = router
     .post('/step/first/complete', verifyToken, completeFirstStep)
     .post('/step/second/complete', verifyToken, completeSecondStep)
+    .post('/step/three/complete', verifyToken, upload.array('images', 10), completeThirdStep)
     .post('/step', verifyToken, getStateForStep);

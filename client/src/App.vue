@@ -4,7 +4,7 @@
     <v-toolbar app></v-toolbar>
     <v-content>
       <v-container fluid>
-        <Create />
+        <Multiple />
       </v-container>
     </v-content>
   </v-app>
@@ -17,6 +17,7 @@ import SideNav from './components/shared/SideNav';
 import Details from './components/Product/Details';
 import Login from './components/user/Login';
 import Create from './components/Product/Create';
+import Multiple from './components/shared/Multiple'
 
 export default {
   name: 'App',
@@ -26,7 +27,8 @@ export default {
     SideNav,
     Details,
     Login,
-    Create
+    Create,
+    Multiple
   },
   data() {
     return {
