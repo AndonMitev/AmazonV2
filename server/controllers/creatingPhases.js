@@ -7,10 +7,7 @@ const upload = require('../config/multer');
 const fs = require('fs');
 const aws = require('aws-sdk');
 
-aws.config.update({
-    accessKeyId: 'AKIAIPSXAGOHTJFMEO2Q',
-    secretAccessKey: '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'
-})
+
 
 const jsonResponseOnError = (res, statusCode, error) =>
     res
