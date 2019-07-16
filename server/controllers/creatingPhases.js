@@ -4,6 +4,13 @@ const CreatingPhases = mongoose.model('CreatingPhases');
 const TempProduct = mongoose.model('TempProduct');
 const verifyToken = require('../middleware/verify-token');
 const upload = require('../config/multer');
+const fs = require('fs');
+const aws = require('aws-sdk');
+
+aws.config.update({
+    accessKeyId: 'AKIAIPSXAGOHTJFMEO2Q',
+    secretAccessKey: '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'
+})
 
 const jsonResponseOnError = (res, statusCode, error) =>
     res
@@ -16,7 +23,7 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
         .status(statusCode)
         .json(data);
 
-const addImages = imagesData => {
+const getImagesPaths = imagesData => {
     const imagePaths = [];
     imagesData.forEach(image => imagePaths.push(image.path));
     return imagePaths;
@@ -107,13 +114,26 @@ const getStateForStep = async (req, res) => {
 
 const completeThirdStep = async (req, res) => {
     try {
+        const s3 = new aws.S3();
         const userId = req.userData._id;
         const images = req.files;
+        let s3res;
+
+        req.files.forEach(file => {
+            s3res = await s3.upload({
+                Bucket: 'testmystore',
+                Key: file.filename,
+               // Body: 
+               ACL: 'public-read'
+            })
+        })
+
+
 
         const productData = await CreatingPhases.findOne({ userId })
             .populate('tempProductId');
-        productData.tempProductId.images = [...productData.tempProductId.images, ...addImages(images)];
 
+        productData.tempProductId.images = [...productData.tempProductId.images, ...getImagesPaths(images)];
         productData.currentStep++;
 
         await productData.save();
