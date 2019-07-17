@@ -31,17 +31,25 @@ const actions = {
         const response = await creatingPhasesServices.completeSecondStep({ categories, step });
         const currentStep = response.data.currentStep;
         commit('setCurrentStep', currentStep)
+    },
+
+    async completeThirdStep({ commit }, payload) {
+        const response = await creatingPhasesServices.completeThirdStep(payload);
+        const images = response.data.productNewState.tempProductId.images;
+        commit('setImages', images);
     }
 };
 
 const mutations = {
     setCurrentStep: (state, currentStep) => state.currentStep = currentStep,
-    setProduct: (state, product) => state.tempProduct = product
+    setProduct: (state, product) => state.tempProduct = product,
+    setImages: (state, images) => state.tempProduct.images = images
 };
 
 const getters = {
     step: state => state.currentStep,
-    tempProduct: state => state.tempProduct
+    tempProduct: state => state.tempProduct,
+    images: state => state.tempProduct.images
 };
 
 export default {

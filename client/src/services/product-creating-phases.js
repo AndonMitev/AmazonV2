@@ -8,7 +8,8 @@ export default (() => {
     const routes = {
         step: '/step',
         firstComplete: '/step/first/complete',
-        secondComplete: '/step/second/complete'
+        secondComplete: '/step/second/complete',
+        thirdComplete: '/step/three/complete'
     }
 
     const getCurrentStep = async () => {
@@ -24,10 +25,15 @@ export default (() => {
         return await axios.post(routes.secondComplete, data);
     }
 
+    const completeThirdStep = async data => {
+        return await axios.post(routes.thirdComplete, data);
+    } 
+
     return {
         getCurrentStep,
         completeFirstStep,
-        completeSecondStep
+        completeSecondStep,
+        completeThirdStep
     }
 
 })();

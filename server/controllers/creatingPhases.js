@@ -115,7 +115,6 @@ const completeThirdStep = async (req, res) => {
         const currentPhase = await CreatingPhases.findOne({ userId });
         const productId = currentPhase.tempProductId;
         const product = await TempProduct.findById(productId);
-
         product.images = [...product.images, ...getImagesLocation(images)];
 
         await product.save();
