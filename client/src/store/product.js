@@ -7,13 +7,23 @@ const state = {
         quantity: 0,
         state: '',
         description: '',
-        categories: []
+        categories: [],
+        images: [],
+        likes: 0,
+        views: 0,
+        boughtCounter: 0,
+        rating: 0,
+        owner: 0,
+        comments: [],
+        createdAt: null
     }
 };
 
 const actions = {
-    async setProduct({ commit }, payload) {
-        const response = await productServices.createNewProduct(payload);
+
+    async finishCreatingPhase({ commit }, productData) {
+        const response = await productServices.createNewProduct(productData);
+        console.log(response);
         commit('setProduct', response.data.product);
     }
 };

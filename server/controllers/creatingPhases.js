@@ -6,8 +6,6 @@ const verifyToken = require('../middleware/verify-token');
 const upload = require('../aws-config');
 
 
-
-
 const jsonResponseOnError = (res, statusCode, error) =>
     res
         .status(statusCode)
@@ -19,17 +17,32 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
         .status(statusCode)
         .json(data);
 
+const getCurrentPhase = async userId => {
+    const currentPhase = await CreatingPhases.findOne({ userId })
+    const productId = currentPhase.tempProductId;
+    return [currentPhase, productId];
+}
+
+const getProduct = async productId =>
+    await TempProduct.findById(productId);
+
+
 const getImagesLocation = imagesData => {
     const imagesLocation = [];
     imagesData.forEach(image => imagesLocation.push(image.location));
     return imagesLocation;
 }
 
+const saveUpdatedItems = async (currentPhase, product) => {
+    await product.save();
+    await currentPhase.save();
+}
+
 const completeFirstStep = async (req, res) => {
     try {
         const userId = req.userData._id;
         const { name, price, quantity, state, description } = req.body.product;
-        let { currentStep } = req.body;
+        let { step } = req.body;
 
         const tempProduct = await TempProduct.create({
             owner: userId,
@@ -40,18 +53,18 @@ const completeFirstStep = async (req, res) => {
             description
         });
 
-        ++currentStep;
+        ++step;
 
         const currentPhase = await CreatingPhases.create({
-            currentStep,
             userId,
+            currentStep: step,
             tempProductId: tempProduct._id,
         });
 
         return jsonResponseOnSuccess(res, 201, {
             currentPhase,
             tempProduct,
-            currentStep,
+            step,
             message: 'First step successfully completed!'
         });
     } catch (error) {
@@ -66,20 +79,16 @@ const completeSecondStep = async (req, res) => {
         const categories = req.body.categories;
         let currentStep = req.body.step;
 
-        const currentPhase = await CreatingPhases.findOne({ userId })
-        const productId = currentPhase.tempProductId;
+        const [currentPhase, productId] = await getCurrentPhase(userId);
+        const product = await getProduct(productId);
 
-        const product = await TempProduct.findById(productId);
         product.categories = [... new Set([...product.categories, ...categories])];
-        await product.save();
+        currentPhase.currentStep = ++currentStep;
 
-        ++currentStep;
-        currentPhase.currentStep = currentStep;
-
-        await currentPhase.save();
+        saveUpdatedItems(currentPhase, product);
 
         return jsonResponseOnSuccess(res, 201, {
-            currentStep,
+            currentPhase,
             message: 'Categories successfully added!'
         });
 
@@ -87,8 +96,38 @@ const completeSecondStep = async (req, res) => {
         console.log(error);
         return jsonResponseOnError(res, 500, { error });
     }
-
 }
+
+const completeThirdStep = async (req, res) => {
+    try {
+        const userId = req.userData._id;
+        const images = req.files;
+        console.log(req.files);
+        const [currentPhase, productId] = await getCurrentPhase(userId);
+        const productToUpdate = await getProduct(productId);
+
+        productToUpdate.images = [...productToUpdate.images, ...getImagesLocation(images)];
+
+        if (currentPhase.currentStep !== 4) {
+            currentPhase.currentStep = ++currentPhase.currentStep;
+        }
+
+
+        await saveUpdatedItems(currentPhase, productToUpdate);
+
+        const product = await CreatingPhases.findOne({ userId })
+            .populate('tempProductId');
+        const tempProduct = product.tempProductId;
+
+        return jsonResponseOnSuccess(res, 200, { tempProduct, currentPhase });
+    } catch (error) {
+        console.log(error);
+        return jsonResponseOnError(res, 500, { message: 'Something went wrong with upload on images' });
+    }
+}
+
+
+
 
 const getStateForStep = async (req, res) => {
     try {
@@ -105,27 +144,6 @@ const getStateForStep = async (req, res) => {
         }
     } catch (error) {
         return jsonResponseOnError(res, 500, { error });
-    }
-}
-
-const completeThirdStep = async (req, res) => {
-    try {
-        const userId = req.userData._id;
-        const images = req.files;
-        const currentPhase = await CreatingPhases.findOne({ userId });
-        const productId = currentPhase.tempProductId;
-        const product = await TempProduct.findById(productId);
-        product.images = [...product.images, ...getImagesLocation(images)];
-
-        await product.save();
-        await currentPhase.save();
-
-        const productNewState = await CreatingPhases.findOne({ userId })
-            .populate('tempProductId');
-
-        return jsonResponseOnSuccess(res, 200, { productNewState });
-    } catch (error) {
-        return jsonResponseOnError(res, 500, { message: 'Something went wrong with upload on images' });
     }
 }
 
