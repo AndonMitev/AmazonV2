@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const Product = require('mongoose').model('Product');
-const Category = require('mongoose').model('Category');
+const mongoose = require('mongoose');
+const Product = mongoose.model('Product');
+const TempProduct = mongoose.model('TempProduct');
+const CreatingPhases = mongoose.model('CreatingPhases');
 const verifyToken = require('../middleware/verify-token');
 const upload = require('../config/multer');
 const verifyRole = require('../middleware/verify-role');
@@ -23,36 +25,31 @@ const addImages = imagesData => {
     return imagePaths;
 }
 
-// const addToCategory = (categories, productId) => {
-//     if (!Array.isArray(categories)) {
-//         categories = [categories];
-//     }
+const removeFromCreatingPhases = async owner => {
+    const creatingPhase = await CreatingPhases.findOne({ userId: owner })
+        .populate('tempProductId');
+    const tempProductId = creatingPhase.tempProductId._id;
+    await CreatingPhases.findByIdAndDelete(creatingPhase._id);
+    await TempProduct.findByIdAndDelete(tempProductId);
+}
 
-//     categories.forEach(async category => {
-//         const foundedCategory = await Category.findOne({ name: category });
-
-//         if (!foundedCategory) {
-//             await Category.create({ name: category, products: productId })
-//         } else {
-//             foundedCategory.products.push(productId);
-//             await foundedCategory.save();
-//         }
-//     });
-// }
 
 const onCreateProduct = async (req, res) => {
     try {
         const owner = req.userData._id;
+
+        await removeFromCreatingPhases(owner);
+
+
         const productData = { ...req.body };
         const product = await Product.create({ owner, ...productData });
-        console.log(product);
+
         return jsonResponseOnSuccess(res, 201,
             {
                 product,
                 message: 'Product added'
             });
     } catch (error) {
-        console.log(error);
         if (error.errors && error.errors.state) {
             return jsonResponseOnError(res, 400, error.errors.state.message);
         }
@@ -102,5 +99,7 @@ const onEditProduct = async (req, res) => {
 
 module.exports = router
     .get('/', onGettingAllProducts)
-    .post('/product/add', verifyToken, upload.array('images', 10), onCreateProduct)
-    .put('/product/edit/:productId', verifyToken, upload.array('images', 10), onEditProduct);
+    .post('/product/add', verifyToken, onCreateProduct)
+    .put('/product/edit/:productId', verifyToken, onEditProduct);
+
+
