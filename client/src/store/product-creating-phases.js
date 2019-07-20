@@ -15,8 +15,9 @@ const state = {
 };
 
 const actions = {
-    async getCurrentStep({ commit }) {
-        const response = await creatingPhasesServices.getCurrentStep();
+    async getCurrentStep({ commit }, step) {
+        console.log(step)
+        const response = await creatingPhasesServices.getCurrentStep(step);
         const data = response.data;
         const currentStep = data.currentPhase.currentStep;
         const product = data.product;

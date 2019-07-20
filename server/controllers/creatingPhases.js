@@ -38,35 +38,77 @@ const saveUpdatedItems = async (currentPhase, product) => {
     await currentPhase.save();
 }
 
+const initCreatingPhase = async (userId, name, price, quantity, state, description, step) => {
+    const tempProduct = await TempProduct.create({
+        owner: userId,
+        name,
+        price,
+        quantity,
+        state,
+        description
+    });
+
+    step = 2;
+
+    const currentPhase = await CreatingPhases.create({
+        userId,
+        currentStep: step,
+        tempProductId: tempProduct._id,
+    });
+    return [currentPhase, tempProduct, step];
+}
+
+
 const completeFirstStep = async (req, res) => {
     try {
         const userId = req.userData._id;
         const { name, price, quantity, state, description } = req.body.product;
-        let { step } = req.body;
+        let providedStep = req.body.step;
+        let [currentPhase, tempProduct, step] = [null, null, null];
 
-        const tempProduct = await TempProduct.create({
-            owner: userId,
-            name,
-            price,
-            quantity,
-            state,
-            description
-        });
+        const phase = await CreatingPhases.findOne({ userId })
+            .populate('tempProductId');
+        if (phase) {
+            const productId = phase.tempProductId._id;
+            let product = await TempProduct.findById(productId);
 
-        ++step;
+            product = {
+                name,
+                price,
+                quantity,
+                state,
+                description,
+                categories: []
+            };
 
-        const currentPhase = await CreatingPhases.create({
-            userId,
-            currentStep: step,
-            tempProductId: tempProduct._id,
-        });
+            phase.currentStep = providedStep;
 
-        return jsonResponseOnSuccess(res, 201, {
-            currentPhase,
-            tempProduct,
-            step,
-            message: 'First step successfully completed!'
-        });
+
+            await TempProduct.findByIdAndUpdate(productId, product);
+            await phase.save();
+
+            currentPhase = await CreatingPhases.findOne({ userId })
+                .populate('tempProductId');
+            tempProduct = currentPhase.tempProductId;
+            step = providedStep;
+
+            return jsonResponseOnSuccess(res, 201, {
+                currentPhase,
+                tempProduct,
+                step,
+                message: 'Product successfully updated'
+            });
+        } else {
+            [currentPhase, tempProduct, step] = await initCreatingPhase(userId, name, price, quantity, state, description, step);
+
+            return jsonResponseOnSuccess(res, 201, {
+                currentPhase,
+                tempProduct,
+                step,
+                message: 'First step successfully completed!'
+            });
+        }
+
     } catch (error) {
         console.log(error);
         return jsonResponseOnError(res, 500, { error });
@@ -132,13 +174,20 @@ const completeThirdStep = async (req, res) => {
 const getStateForStep = async (req, res) => {
     try {
         const userId = req.userData._id;
+        const step = req.body.step;
 
-        const currentPhase = await CreatingPhases.findOne({ userId })
+        let currentPhase = await CreatingPhases.findOne({ userId })
             .populate('tempProductId');
 
         if (!currentPhase) {
             return jsonResponseOnSuccess(res, 200, { currentPhase: { currentStep: 1 } });
         } else {
+            if (step) {
+                currentPhase.currentStep--;
+                await currentPhase.save();
+                currentPhase = await CreatingPhases.findOne({ userId })
+                    .populate('tempProductId');
+            }
             const product = currentPhase.tempProductId;
             return jsonResponseOnSuccess(res, 200, { currentPhase, product });
         }
@@ -153,3 +202,4 @@ module.exports = router
     .post('/step/second/complete', verifyToken, completeSecondStep)
     .post('/step/three/complete', verifyToken, upload.array('images', 10), completeThirdStep)
     .post('/step', verifyToken, getStateForStep);
+

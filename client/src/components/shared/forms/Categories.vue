@@ -9,7 +9,8 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-btn @click="onClick" color="primary">Next</v-btn>
+    <v-btn @click="onNext" color="primary">Next</v-btn>
+    <v-btn @click="onBack" color="primary">Back</v-btn>
   </div>
 </template>
 
@@ -47,8 +48,11 @@ export default {
     categories: []
   }),
   methods: {
-    onClick() {
+    onNext() {
       this.$emit('onAddedCategories', this.categories);
+    },
+    onBack() {
+      this.$emit('backToProductForm');
     }
   }
 };

@@ -12,9 +12,9 @@ export default (() => {
         thirdComplete: '/step/three/complete'
     }
 
-    const getCurrentStep = async () => {
+    const getCurrentStep = async step => {
         const userId = localStorage.getItem('token');
-        return await axios.post(routes.step, userId);
+        return await axios.post(routes.step, {userId, step});
     }
 
     const completeFirstStep = async data => {

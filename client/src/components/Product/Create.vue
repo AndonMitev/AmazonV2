@@ -3,7 +3,7 @@
     <Stepper :step="step" />
     <PageTitle :title="'Create a product'" />
     <CreateProductForm v-if="step === 1" @onFormSubmited="createProduct" />
-    <Categories v-else-if="step === 2" @onAddedCategories="addCategories" />
+    <Categories v-else-if="step === 2" @onAddedCategories="addCategories" @backToProductForm="backToProductForm" />
     <Multiple v-else-if="step === 3 || step === 4" @onAddedImages="attachImages" />
     <div v-if="haveImages">
       <div v-for="image in tempProduct.images" :key="image">
@@ -46,6 +46,9 @@ export default {
     },
     addCategories(categories) {
       this.completeSecondStep({ categories, step: this.step });
+    },
+    backToProductForm() {
+      this.getCurrentStep(1);
     },
     attachImages(images) {
       this.completeThirdStep(images);
