@@ -81,6 +81,7 @@ const completeFirstStep = async (req, res) => {
                 categories: []
             };
 
+            providedStep++;
             phase.currentStep = providedStep;
 
 
