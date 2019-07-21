@@ -17,6 +17,7 @@ import SideNav from './components/shared/SideNav';
 import Details from './components/Product/Details';
 import Login from './components/user/Login';
 import Create from './components/Product/Create';
+import HomePage from './components/Home/HomePage';
 
 export default {
   name: 'App',
@@ -26,7 +27,8 @@ export default {
     SideNav,
     Details,
     Login,
-    Create
+    Create,
+    HomePage
   },
   data() {
     return {

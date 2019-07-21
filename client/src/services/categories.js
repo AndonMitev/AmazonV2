@@ -4,15 +4,16 @@ import baseUrl from './http-config';
 export default (() => {
     axios.defaults.baseURL = baseUrl;
     const routes = {
+        getCategories: '/categories',
         addToCategory: '/categories/add/'
     }
 
-    const addProductToCategories = async (categories, productId) => {
-        axios.post(addToCategory + productId, categories);
+    const getCategories = async () => {
+        return await axios.get(routes.getCategories);
     }
 
     return {
-        addProductToCategories
+        getCategories
     }
 
 })();

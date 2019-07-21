@@ -5,8 +5,9 @@ const state = {
 };
 
 const actions = {
-    async setCategories({ commit }, payload) {
-
+    async getCategories({ commit }) {
+        const response = await categoryServices.getCategories();
+        console.log(response);
     }
 }
 

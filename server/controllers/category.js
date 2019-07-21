@@ -15,11 +15,12 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
 
 const getCategories = async (req, res) => {
     try {
-        const categories = Category
+        const categories = await Category
             .find();
 
         return jsonResponseOnSuccess(res, 200, { categories });
     } catch (error) {
+        console.log(error);
         return jsonResponseOnError(res, 500, error);
     }
 }

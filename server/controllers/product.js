@@ -4,8 +4,8 @@ const Product = mongoose.model('Product');
 const TempProduct = mongoose.model('TempProduct');
 const CreatingPhases = mongoose.model('CreatingPhases');
 const verifyToken = require('../middleware/verify-token');
-const upload = require('../config/multer');
-const verifyRole = require('../middleware/verify-role');
+const Category = mongoose.model('Category');
+
 
 const jsonResponseOnError = (res, statusCode, error) =>
     res
@@ -33,6 +33,14 @@ const removeFromCreatingPhases = async owner => {
     await TempProduct.findByIdAndDelete(tempProductId);
 }
 
+const addToCategories = (categories, productId) => {
+    categories.forEach(async selectedCategory => {
+        const category = await Category.findOne({ name: selectedCategory });
+        category.products.push(productId);
+        await category.save();
+    })
+}
+
 
 const onCreateProduct = async (req, res) => {
     try {
@@ -40,9 +48,10 @@ const onCreateProduct = async (req, res) => {
 
         await removeFromCreatingPhases(owner);
 
-
         const productData = { ...req.body };
         const product = await Product.create({ owner, ...productData });
+
+        await addToCategories(productData.categories, product._id);
 
         return jsonResponseOnSuccess(res, 201,
             {
@@ -50,6 +59,7 @@ const onCreateProduct = async (req, res) => {
                 message: 'Product added'
             });
     } catch (error) {
+        console.log(error);
         if (error.errors && error.errors.state) {
             return jsonResponseOnError(res, 400, error.errors.state.message);
         }

@@ -38,6 +38,7 @@ const saveUpdatedItems = async (currentPhase, product) => {
     await currentPhase.save();
 }
 
+
 const initCreatingPhase = async (userId, name, price, quantity, state, description, step) => {
     const tempProduct = await TempProduct.create({
         owner: userId,
@@ -127,7 +128,7 @@ const completeSecondStep = async (req, res) => {
         product.categories = [...categories];
         currentPhase.currentStep = ++currentStep;
 
-        saveUpdatedItems(currentPhase, product);
+        await saveUpdatedItems(currentPhase, product);
 
         return jsonResponseOnSuccess(res, 201, {
             currentPhase,
