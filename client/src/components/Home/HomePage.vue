@@ -1,9 +1,15 @@
 <template>
-  <PageTitle :title="pageTitle" />
+  <div>
+    <PageTitle :title="pageTitle" />
+    <v-layout v-if="!isLoading">
+      <Category :categories="categories" />
+    </v-layout>
+  </div>
 </template>
 
 <script>
 import PageTitle from '../shared/PageTitle';
+import Category from './Subcomponents/Category';
 import { mapState, mapActions } from 'vuex';
 
 export default {
@@ -11,6 +17,9 @@ export default {
   data: () => ({
     pageTitle: 'Categories'
   }),
+  computed: {
+    ...mapState(['categories', 'isLoading'])
+  },
   methods: {
     ...mapActions(['getCategories'])
   },
@@ -18,7 +27,8 @@ export default {
     this.getCategories();
   },
   components: {
-    PageTitle
+    PageTitle,
+    Category
   }
 };
 </script>

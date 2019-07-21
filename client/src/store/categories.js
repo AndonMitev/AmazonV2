@@ -1,19 +1,25 @@
 import categoryServices from '../services/categories';
 
 const state = {
-    categories: []
+    categories: [],
 };
 
 const actions = {
     async getCategories({ commit }) {
         const response = await categoryServices.getCategories();
-        console.log(response);
+        console.log(response.categories);
+        commit('setCategories', response.data);
+        commit('setIsLoading', false);
     }
 }
 
-const mutations = {};
+const mutations = {
+    setCategories: (state, categories) => state.categories = categories,
+};
 
-const getters = {};
+const getters = {
+    categories: state => state.categories.categories,
+};
 
 export default {
     state,

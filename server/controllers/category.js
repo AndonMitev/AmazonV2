@@ -1,5 +1,7 @@
 const router = require('express').Router();
-const Category = require('mongoose').model('Category');
+const mongoose = require('mongoose');
+const Category = mongoose.model('Category');
+const Product = mongoose.model('Product');
 const verifyToken = require('../middleware/verify-token');
 
 const jsonResponseOnError = (res, statusCode, error) =>
@@ -16,9 +18,13 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
 const getCategories = async (req, res) => {
     try {
         const categories = await Category
-            .find();
+            .find()
+            .populate({
+                path: 'products',
+                model: 'Product'
+            });
 
-        return jsonResponseOnSuccess(res, 200, { categories });
+        return jsonResponseOnSuccess(res, 200, categories);
     } catch (error) {
         console.log(error);
         return jsonResponseOnError(res, 500, error);

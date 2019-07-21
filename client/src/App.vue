@@ -4,7 +4,7 @@
     <v-toolbar app></v-toolbar>
     <v-content>
       <v-container fluid>
-        <Create />
+        <HomePage />
       </v-container>
     </v-content>
   </v-app>

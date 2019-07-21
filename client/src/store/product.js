@@ -23,7 +23,6 @@ const actions = {
 
     async finishCreatingPhase({ commit }, productData) {
         const response = await productServices.createNewProduct(productData);
-        console.log(response);
         commit('setProduct', response.data.product);
     }
 };
