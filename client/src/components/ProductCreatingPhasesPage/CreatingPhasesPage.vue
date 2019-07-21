@@ -2,21 +2,17 @@
   <div v-if="!isLoading">
     <Stepper :step="step" />
 
-    <CreateProductForm
-      v-if="step === 1"
-      :tempProduct="tempProduct"
-      @onFormSubmited="submitProductForm"
-    />
+    <productForm v-if="step === 1" :tempProduct="tempProduct" @onFormSubmited="submitProductForm" />
 
-    <Categories
+    <categories
       v-else-if="step === 2"
       :tempProduct="tempProduct"
       @onAddedCategories="addCategories"
       @backToProductForm="backToProductForm"
     />
 
-    <AttachImage
-      v-else-if="step === 3 || step === 4"
+    <attachImage
+      v-else-if="step === 3"
       :tempProduct="tempProduct"
       @onAddedImages="attachImages"
       @backToCategories="backToCategories"
@@ -27,11 +23,10 @@
 
 <script>
 import Stepper from '../shared/Stepper';
-import PageTitle from '../shared/PageTitle';
-import CreateProductForm from '../shared/forms/CreateProductForm';
-import Categories from '../shared/forms/Categories';
-import AttachImage from '../shared/AttachImage';
 import { mapActions, mapGetters } from 'vuex';
+const productForm = () => import('./CreateProductForm');
+const categories = () => import('./Categories');
+const attachImage = () => import('./AttachImage');
 
 export default {
   name: 'CreateProduct',
@@ -71,9 +66,6 @@ export default {
   mounted() {
     this.getCurrentStep();
   },
-  components: { Stepper, PageTitle, CreateProductForm, Categories, AttachImage }
+  components: { Stepper, productForm, categories, attachImage }
 };
 </script>
-
-<style>
-</style>

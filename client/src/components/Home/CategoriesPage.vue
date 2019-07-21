@@ -13,7 +13,7 @@ import Category from './Subcomponents/Category';
 import { mapState, mapActions } from 'vuex';
 
 export default {
-  name: 'Home',
+  name: 'CategoriesPage',
   data: () => ({
     pageTitle: 'Categories'
   }),

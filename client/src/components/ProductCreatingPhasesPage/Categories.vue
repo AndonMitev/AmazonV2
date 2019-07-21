@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import PageTitle from '../PageTitle';
+import PageTitle from '../shared/PageTitle';
 
 export default {
   name: 'Categories',
@@ -74,6 +74,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>
