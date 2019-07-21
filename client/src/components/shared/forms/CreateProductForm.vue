@@ -47,8 +47,14 @@ export default {
       availableStates: ['new', 'used']
     }
   }),
+  props: ['tempProduct'],
   computed: {
-    ...productRules
+    ...productRules,
+    setProduct() {
+      if (this.tempProduct) {
+        return (this.product = { ...this.product, ...this.tempProduct });
+      }
+    }
   },
   methods: {
     onSubmit() {
@@ -57,6 +63,9 @@ export default {
         this.$emit('onFormSubmited', rest);
       }
     }
+  },
+  mounted() {
+    this.setProduct;
   }
 };
 </script>

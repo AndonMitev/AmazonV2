@@ -1,9 +1,19 @@
 <template>
-  <div>
+  <div v-if="!isLoading">
     <Stepper :step="step" />
     <PageTitle :title="'Create a product'" />
-    <CreateProductForm v-if="step === 1" @onFormSubmited="createProduct" />
-    <Categories v-else-if="step === 2" @onAddedCategories="addCategories" @backToProductForm="backToProductForm" />
+
+    <CreateProductForm
+      v-if="step === 1"
+      @onFormSubmited="createProduct"
+      :tempProduct="tempProduct"
+    />
+
+    <Categories
+      v-else-if="step === 2"
+      @onAddedCategories="addCategories"
+      @backToProductForm="backToProductForm"
+    />
     <Multiple v-else-if="step === 3 || step === 4" @onAddedImages="attachImages" />
     <div v-if="haveImages">
       <div v-for="image in tempProduct.images" :key="image">
@@ -27,8 +37,11 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'CreateProduct',
+  data: () => ({
+    showProduct: false
+  }),
   computed: {
-    ...mapGetters(['step', 'tempProduct']),
+    ...mapGetters(['step', 'tempProduct', 'isLoading']),
     haveImages() {
       return this.tempProduct && this.tempProduct.images;
     }
