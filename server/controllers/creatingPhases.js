@@ -78,7 +78,6 @@ const completeFirstStep = async (req, res) => {
                 quantity,
                 state,
                 description,
-                categories: []
             };
 
             providedStep++;
@@ -125,7 +124,7 @@ const completeSecondStep = async (req, res) => {
         const [currentPhase, productId] = await getCurrentPhase(userId);
         const product = await getProduct(productId);
 
-        product.categories = [... new Set([...product.categories, ...categories])];
+        product.categories = [...categories];
         currentPhase.currentStep = ++currentStep;
 
         saveUpdatedItems(currentPhase, product);
@@ -151,7 +150,7 @@ const completeThirdStep = async (req, res) => {
 
         productToUpdate.images = [...productToUpdate.images, ...getImagesLocation(images)];
 
-        if (currentPhase.currentStep !== 4) {
+        if (currentPhase.currentStep !== 3) {
             currentPhase.currentStep = ++currentPhase.currentStep;
         }
 
