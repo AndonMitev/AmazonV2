@@ -107,8 +107,22 @@ const onEditProduct = async (req, res) => {
     }
 }
 
+const getProductById = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const product = await Product.findById(id);
+
+        jsonResponseOnSuccess(res, 200, { product });
+    } catch (error) {
+        jsonResponseOnSuccess(res, 404, { message: 'Not found' });
+        console.log(error);
+    }
+}
+
 module.exports = router
     .get('/', onGettingAllProducts)
+    .get('/product/:id', getProductById)
     .post('/product/add', verifyToken, onCreateProduct)
     .put('/product/edit/:productId', verifyToken, onEditProduct);
 

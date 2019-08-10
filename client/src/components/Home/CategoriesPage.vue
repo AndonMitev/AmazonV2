@@ -2,14 +2,30 @@
   <div>
     <PageTitle :title="pageTitle" />
     <v-layout v-if="!isLoading">
-      <Category :categories="categories" />
+      <v-layout row wrap justify-start>
+        <v-flex v-for="category in categories.categories" :key="category._id">
+          <div>
+            <h3>{{category.name}} - {{category.products.length}} Products</h3>
+            <v-layout row wrap justify-start mt-3>
+              <Product
+                @viewDetails="viewDetails"
+                @addToCart="addToCart"
+                v-for="product in category.products"
+                :key="product.id"
+                :product="product"
+              />
+            </v-layout>
+          </div>
+          <v-divider></v-divider>
+        </v-flex>
+      </v-layout>
     </v-layout>
   </div>
 </template>
 
 <script>
 import PageTitle from '../shared/PageTitle';
-import Category from './Subcomponents/Category';
+import Product from '../Product/Product';
 import { mapState, mapActions } from 'vuex';
 
 export default {
@@ -21,14 +37,15 @@ export default {
     ...mapState(['categories', 'isLoading'])
   },
   methods: {
-    ...mapActions(['getCategories'])
+    ...mapActions(['getCategories']),
+    addToCart(id) {}
   },
   mounted() {
     this.getCategories();
   },
   components: {
     PageTitle,
-    Category
+    Product
   }
 };
 </script>

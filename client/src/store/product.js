@@ -20,9 +20,12 @@ const state = {
 };
 
 const actions = {
-
     async finishCreatingPhase({ commit }, productData) {
         const response = await productServices.createNewProduct(productData);
+        commit('setProduct', response.data.product);
+    },
+    async getProductById({ commit }, productId) {
+        const response = await productServices.getProductById(productId);
         commit('setProduct', response.data.product);
     }
 };
