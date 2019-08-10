@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Products from './components/Product/Products';
+import Product from './components/Product/Product';
 import SideNav from './components/shared/SideNav';
 import Details from './components/Product/Details';
 import CategoriesPage from './components/Home/CategoriesPage';
@@ -19,7 +19,7 @@ import CategoriesPage from './components/Home/CategoriesPage';
 export default {
   name: 'App',
   components: {
-    Products,
+    Product,
     SideNav,
     Details,
     CategoriesPage
