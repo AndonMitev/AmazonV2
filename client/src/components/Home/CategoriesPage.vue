@@ -8,7 +8,6 @@
             <h3>{{category.name}} - {{category.products.length}} Products</h3>
             <v-layout row wrap justify-start mt-3>
               <Product
-                @viewDetails="viewDetails"
                 @addToCart="addToCart"
                 v-for="product in category.products"
                 :key="product.id"

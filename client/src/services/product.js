@@ -4,8 +4,9 @@ import baseUrl from './http-config';
 export default (() => {
     axios.defaults.baseURL = baseUrl;
     const routes = {
+        getProducyById: '/product/',
         addProduct: '/product/add',
-        getProducyById: '/product/'
+        addLike: '/product/'
     }
 
 
@@ -17,9 +18,14 @@ export default (() => {
         return await axios.get(routes.getProducyById + id);
     }
 
+    const addLike = async id => {
+        return await axios.post(routes.addLike + id + '/like');
+    }
+
     return {
         createNewProduct,
-        getProductById
+        getProductById,
+        addLike
     }
 
 })();

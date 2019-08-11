@@ -1,7 +1,7 @@
 import productServices from '../services/product';
 
 const state = {
-    productModel: {
+    model: {
         name: '',
         price: 0,
         quantity: 0,
@@ -27,15 +27,20 @@ const actions = {
     async getProductById({ commit }, productId) {
         const response = await productServices.getProductById(productId);
         commit('setProduct', response.data.product);
+    },
+    async addLikeAction({ commit }, productId) {
+        const response = await productServices.addLike(productId);
+        console.log(response);
+        commit('setProduct', response.data.product);
     }
 };
 
 const mutations = {
-    setProduct: (state, product) => state.productModel = product
+    setProduct: (state, product) => state.model = product
 };
 
 const getters = {
-    product: state => state.productModel
+    product: state => state.model
 };
 
 export default {
