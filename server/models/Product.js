@@ -18,7 +18,7 @@ const ProductSchema = new mongoose.Schema({
   boughtCounter: { type: Number, default: 0 },
   discountPercentages: { type: Number, default: 0 },
   likes: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User', default: [] }],
-  views: { type: Number, default: 0 },
+  views: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User', default: [] }],
   comments: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Comment', default: [] }],
   rating: { type: Number, default: 0 },
   pricesOverTime: [{ price: { type: Number }, time: { type: Date, default: Date.now } }],

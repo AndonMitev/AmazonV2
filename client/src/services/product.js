@@ -6,7 +6,8 @@ export default (() => {
     const routes = {
         getProducyById: '/product/',
         addProduct: '/product/add',
-        addLike: '/product/'
+        addLike: '/product/',
+        addView: '/product/'
     }
 
 
@@ -22,10 +23,15 @@ export default (() => {
         return await axios.post(routes.addLike + id + '/like');
     }
 
+    const addView = async id => {
+        return await axios.post(routes.addView + id + '/view');
+    }
+
     return {
         createNewProduct,
         getProductById,
-        addLike
+        addLike,
+        addView
     }
 
 })();

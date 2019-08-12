@@ -65,7 +65,7 @@ export default {
     productId: null
   }),
   methods: {
-    ...mapActions(['getProductById', 'addLikeAction']),
+    ...mapActions(['getProductById', 'addLikeAction', 'addViewAction']),
     addRaiting(raitingValue) {
       console.log(raitingValue);
     },
@@ -73,7 +73,7 @@ export default {
       this.addLikeAction(this.productId);
     },
     addView() {
-
+      this.addViewAction(this.productId);
     }
   },
   computed: {

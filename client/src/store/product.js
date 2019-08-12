@@ -30,7 +30,10 @@ const actions = {
     },
     async addLikeAction({ commit }, productId) {
         const response = await productServices.addLike(productId);
-        console.log(response);
+        commit('setProduct', response.data.product);
+    },
+    async addViewAction({ commit }, productId) {
+        const response = await productServices.addView(productId);
         commit('setProduct', response.data.product);
     }
 };

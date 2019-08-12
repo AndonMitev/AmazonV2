@@ -36,8 +36,14 @@ const removeFromCreatingPhases = async owner => {
 const addToCategories = (categories, productId) => {
     categories.forEach(async selectedCategory => {
         const category = await Category.findOne({ name: selectedCategory });
-        category.products.push(productId);
-        await category.save();
+
+        if (!category) {
+            await Category.create({ name: selectedCategory, products: [productId] });
+        } else {
+            category.products.push(productId);
+            await category.save();
+        }
+
     })
 }
 
@@ -113,9 +119,9 @@ const getProductById = async (req, res) => {
 
         const product = await Product.findById(id);
 
-        jsonResponseOnSuccess(res, 200, { product });
+        return jsonResponseOnSuccess(res, 200, { product });
     } catch (error) {
-        jsonResponseOnSuccess(res, 404, { message: 'Not found' });
+        return jsonResponseOnSuccess(res, 404, { message: 'Not found' });
         console.log(error);
     }
 }
@@ -128,24 +134,37 @@ const addLike = async (req, res) => {
         const product = await Product.findById(productId);
 
         if (product.likes.indexOf(userId) !== -1) {
-            product.likes = product.likes.filter(user => {
-                if (user === userId) {
-                    console.log('yes');
-                } else {
-                    console.log('no');
-                }
-            });
-
+            product.likes = product.likes.filter(user => user != userId);
         } else {
             product.likes.push(userId);
         }
 
         await product.save();
 
-        jsonResponseOnSuccess(res, 200, { product });
+        return jsonResponseOnSuccess(res, 200, { product });
 
     } catch (error) {
-        jsonResponseOnSuccess(res, 500, { message: error });
+        return jsonResponseOnSuccess(res, 500, { message: error });
+    }
+}
+
+const addView = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const userId = req.userData._id;
+
+        const product = await Product.findById(productId);
+
+        if (product.views.indexOf(userId) === -1) {
+            product.views.push(userId);
+        }
+
+        await product.save();
+
+        return jsonResponseOnSuccess(res, 200, { product });
+    } catch (error) {
+        console.log(error);
+        return jsonResponseOnSuccess(res, 500, { message: error });
     }
 }
 
@@ -153,6 +172,7 @@ module.exports = router
     .get('/', onGettingAllProducts)
     .get('/product/:id', getProductById)
     .post('/product/:id/like', verifyToken, addLike)
+    .post('/product/:id/view', verifyToken, addView)
     .post('/product/add', verifyToken, onCreateProduct)
     .put('/product/edit/:productId', verifyToken, onEditProduct);
 

@@ -14,7 +14,7 @@
             <v-rating @input="addRaiting" v-model="product.model.rating"></v-rating>
           </v-flex>
           <v-flex mt-2 offset-xs1 class="text-md-center">
-            <span>{{product.model.views}} customer review</span>
+            <span>{{product.model.views.length}} customer review</span>
           </v-flex>
           <v-flex class="text-md-center">
             <span>
