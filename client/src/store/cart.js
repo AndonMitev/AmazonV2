@@ -19,10 +19,7 @@ const mutations = {
 }
 
 const getters = {
-    productsInCart: state => {
-        console.log(state);
-        return state.productsInCart
-    }
+    productsInCart: state => state.productsInCart
 }
 
 export default {

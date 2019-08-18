@@ -1,12 +1,15 @@
 <template>
   <div>
     <PageTitle :title="pageTitle" />
-    <ProductsInCart :productsInCart="productsInCart" />
+    <ProductsInCart
+      v-if="productsInCart && productsInCart.length"
+      :productsInCart="productsInCart"
+    />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import PageTitle from '../shared/PageTitle';
 import ProductsInCart from './views/ProductsInCart';
 
@@ -19,11 +22,10 @@ export default {
     ...mapActions(['getCartAction'])
   },
   computed: {
-    ...mapState(['productsInCart'])
+    ...mapGetters(['productsInCart'])
   },
   mounted() {
     this.getCartAction();
-    console.log(this.productsInCart);
   },
   components: {
     PageTitle,
