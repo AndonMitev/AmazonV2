@@ -8,7 +8,7 @@
       </v-flex>
     </v-layout>
 
-    <ProductDetails :product="product" @addRaiting="addRaiting" @addLike="addLike" />
+    <ProductDetails :product="product" @addRaiting="addRaiting" @addLike="addLike" @addToCart="addToCart" />
 
     <v-divider></v-divider>
     <v-layout mt-5 row wrap>
@@ -66,10 +66,11 @@ export default {
   }),
   methods: {
     ...mapActions([
-      'getProductById',
+      'getProductByIdAction',
       'addLikeAction',
       'addViewAction',
-      'addRaitingAction'
+      'addRaitingAction',
+      'addToCartAction'
     ]),
     addRaiting(raitingValue) {
       this.addRaitingAction({ productId: this.productId, raitingValue });
@@ -79,6 +80,9 @@ export default {
     },
     addView() {
       this.addViewAction(this.productId);
+    },
+    addToCart() {
+      this.addToCartAction(this.productId);
     }
   },
   computed: {
@@ -86,7 +90,7 @@ export default {
   },
   mounted() {
     this.productId = this.$route.params.id;
-    this.getProductById(this.productId);
+    this.getProductByIdAction(this.productId);
     this.addView();
   },
   components: {

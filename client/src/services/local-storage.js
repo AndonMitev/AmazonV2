@@ -17,10 +17,11 @@ export default (() => {
     }
 
     const setUserData = user => {
-        const { token, email } = user.data;
+        const { token, email, _id } = user.data;
 
         setLsStorage({ key: 'token', value: token });
         setLsStorage({ key: 'email', value: email });
+        setLsStorage({ key: 'id', value: _id });
     }
 
     return {

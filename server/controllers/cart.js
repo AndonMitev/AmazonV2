@@ -20,7 +20,10 @@ const onGettingCart = async (req, res) => {
 
         const cart = await Cart
             .findOne({ userId })
-            .populate('products');
+            .populate({
+                path: 'productsId',
+                model: 'Product'
+            });
 
         return jsonResponseOnSuccess(res, 200, { cart });
     } catch (error) {
@@ -37,13 +40,16 @@ const onAddToCart = async (req, res) => {
             .findOne({ userId });
 
         if (!cart) {
-            await Cart.create({ userId, productId });
+            await Cart.create({ userId, productsId: [productId] });
         } else {
             cart.productsId.push(productId);
             await cart.save();
         }
 
-        return jsonResponseOnSuccess(res, 200, { message: 'Product successfully added!' });
+        const updatedCart = await Cart
+            .findOne({ userId });
+
+        return jsonResponseOnSuccess(res, 200, { message: 'Product successfully added!', cart: updatedCart.productsId });
     } catch (error) {
         return jsonResponseOnError(res, 500, error);
     }

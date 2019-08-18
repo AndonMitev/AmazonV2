@@ -20,11 +20,11 @@ const state = {
 };
 
 const actions = {
-    async finishCreatingPhase({ commit }, productData) {
+    async finishCreatingPhaseAction({ commit }, productData) {
         const response = await productServices.createNewProduct(productData);
         commit('setProduct', response.data.product);
     },
-    async getProductById({ commit }, productId) {
+    async getProductByIdAction({ commit }, productId) {
         const response = await productServices.getProductById(productId);
         commit('setProduct', response.data.product);
     },
@@ -39,7 +39,7 @@ const actions = {
     async addRaitingAction({commit}, payload) {
         const response = await productServices.addVote(payload);
         commit('setProduct', response.data.product);
-    }
+    },
 };
 
 const mutations = {

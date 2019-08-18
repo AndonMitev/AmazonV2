@@ -31,6 +31,7 @@ export default {
         { icon: 'home', title: 'Home' },
         { icon: 'group_add', title: 'Register', link: '/register' },
         { icon: 'person', title: 'Login', link: '/login' },
+        { icon: 'shopping_cart', title: 'My cart', link: '/cart'},
         { icon: 'reorder', title: 'Categories', link: '/' },
         { icon: 'person', title: 'Create product', link: '/product/create' },
         { icon: 'escape', title: 'Logout' }

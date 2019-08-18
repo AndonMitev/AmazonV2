@@ -60,7 +60,8 @@ const onSignIn = async (req, res) => {
                 .json({
                     message: 'Authentication successful!',
                     token: encodedToken,
-                    email
+                    email,
+                    _id
                 });
         }
 

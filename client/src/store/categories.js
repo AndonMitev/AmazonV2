@@ -5,7 +5,7 @@ const state = {
 };
 
 const actions = {
-    async getCategories({ commit }) {
+    async getCategoriesAction({ commit }) {
         const response = await categoryServices.getCategories();
         commit('setCategories', response.data);
         commit('setIsLoading', false);

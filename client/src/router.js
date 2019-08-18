@@ -28,6 +28,10 @@ export default new Router({
       path: '/product/:id',
       name: 'details',
       component: () => import('./components/DetailsPage/Details.vue')
+    },
+    {
+      path: '/cart',
+      component: () => import('./components/Cart/Cart.vue')
     }
   ]
 })

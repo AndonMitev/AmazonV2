@@ -15,7 +15,7 @@ const state = {
 };
 
 const actions = {
-    async getCurrentStep({ commit }, step) {
+    async getCurrentStepAction({ commit }, step) {
         const response = await creatingPhasesServices.getCurrentStep(step);
         const data = response.data;
         const currentStep = data.currentPhase.currentStep;
@@ -25,20 +25,20 @@ const actions = {
         commit('setIsLoading', false);
     },
 
-    async completeFirstStep({ commit }, { product, step }) {
+    async completeFirstStepAction({ commit }, { product, step }) {
         const response = await creatingPhasesServices.completeFirstStep({ product, step });
         commit('setCurrentStep', response.data.step)
         commit('setIsLoading', false);
     },
 
-    async completeSecondStep({ commit }, { categories, step }) {
+    async completeSecondStepAction({ commit }, { categories, step }) {
         const response = await creatingPhasesServices.completeSecondStep({ categories, step });
         const currentStep = response.data.currentPhase.currentStep;
         commit('setCurrentStep', currentStep)
         commit('setIsLoading', false);
     },
 
-    async completeThirdStep({ commit }, images) {
+    async completeThirdStepAction({ commit }, images) {
         const response = await creatingPhasesServices.completeThirdStep(images);
         const data = response.data;
         const currentStep = data.currentPhase.currentStep;

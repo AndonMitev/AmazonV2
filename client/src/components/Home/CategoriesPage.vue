@@ -36,11 +36,13 @@ export default {
     ...mapState(['categories', 'isLoading'])
   },
   methods: {
-    ...mapActions(['getCategories']),
-    addToCart(id) {}
+    ...mapActions(['getCategoriesAction', 'addToCartAction']),
+    addToCart(id) {
+      this.addToCartAction(id);
+    }
   },
   mounted() {
-    this.getCategories();
+    this.getCategoriesAction();
   },
   components: {
     PageTitle,

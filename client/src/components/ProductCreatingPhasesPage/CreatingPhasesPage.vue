@@ -38,33 +38,33 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getCurrentStep',
-      'completeFirstStep',
-      'completeSecondStep',
-      'completeThirdStep',
-      'finishCreatingPhase'
+      'getCurrentStepAction',
+      'completeFirstStepAction',
+      'completeSecondStepAction',
+      'completeThirdStepAction',
+      'finishCreatingPhaseAction'
     ]),
     submitProductForm(product) {
-      this.completeFirstStep({ product, step: 1 });
+      this.completeFirstStepAction({ product, step: 1 });
     },
     addCategories(categories) {
-      this.completeSecondStep({ categories, step: this.step });
+      this.completeSecondStepAction({ categories, step: this.step });
     },
     backToProductForm() {
-      this.getCurrentStep(1);
+      this.getCurrentStepAction(1);
     },
     attachImages(images) {
-      this.completeThirdStep(images);
+      this.completeThirdStepAction(images);
     },
     backToCategories() {
-      this.getCurrentStep(2);
+      this.getCurrentStepAction(2);
     },
     onComplete() {
-      this.finishCreatingPhase(this.tempProduct);
+      this.finishCreatingPhaseAction(this.tempProduct);
     }
   },
   mounted() {
-    this.getCurrentStep();
+    this.getCurrentStepAction();
   },
   components: { Stepper, productForm, categories, attachImage }
 };

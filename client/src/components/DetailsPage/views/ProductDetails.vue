@@ -43,13 +43,7 @@
         </v-layout>
         <v-layout mt-5 row justify-space-around>
           <v-flex md-4>
-            <v-btn round color="blue">
-              <v-icon left>done</v-icon>
-              <span>Buy</span>
-            </v-btn>
-          </v-flex>
-          <v-flex md-4>
-            <v-btn round color="red" depressed>
+            <v-btn round color="orange" depressed @click="addToCart">
               <v-icon left>shopping_cart</v-icon>
               <span>Add to cart</span>
             </v-btn>
@@ -78,7 +72,10 @@ export default {
       this.$emit('addRaiting', raitingValue);
     },
     addLike() {
-        this.$emit('addLike');
+      this.$emit('addLike');
+    },
+    addToCart() {
+      this.$emit('addToCart');
     }
   }
 };
