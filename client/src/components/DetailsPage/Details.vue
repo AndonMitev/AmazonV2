@@ -61,13 +61,18 @@ import ProductDetails from './views/ProductDetails';
 
 export default {
   name: 'Details',
-  data:() => ({
+  data: () => ({
     productId: null
   }),
   methods: {
-    ...mapActions(['getProductById', 'addLikeAction', 'addViewAction']),
+    ...mapActions([
+      'getProductById',
+      'addLikeAction',
+      'addViewAction',
+      'addRaitingAction'
+    ]),
     addRaiting(raitingValue) {
-      console.log(raitingValue);
+      this.addRaitingAction({ productId: this.productId, raitingValue });
     },
     addLike() {
       this.addLikeAction(this.productId);

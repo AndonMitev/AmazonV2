@@ -35,6 +35,10 @@ const actions = {
     async addViewAction({ commit }, productId) {
         const response = await productServices.addView(productId);
         commit('setProduct', response.data.product);
+    },
+    async addRaitingAction({commit}, payload) {
+        const response = await productServices.addVote(payload);
+        commit('setProduct', response.data.product);
     }
 };
 

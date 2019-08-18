@@ -21,6 +21,8 @@ const ProductSchema = new mongoose.Schema({
   views: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User', default: [] }],
   comments: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Comment', default: [] }],
   rating: { type: Number, default: 0 },
+  totalVote: { type: Number, default: 0 },
+  totalVotes: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User', default: [] }],
   pricesOverTime: [{ price: { type: Number }, time: { type: Date, default: Date.now } }],
 });
 

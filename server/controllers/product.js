@@ -168,11 +168,36 @@ const addView = async (req, res) => {
     }
 }
 
+const addVote = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const userId = req.userData._id;
+        const raiting = req.body.raitingValue;
+        console.log(raiting);
+        const product = await Product.findById(productId);
+
+        if (product.totalVotes.indexOf(userId) === -1) {
+            product.totalVotes.push(userId);
+            product.totalVote += raiting;
+            product.rating = product.totalVote / product.totalVotes.length;
+            product.save();
+        }
+
+        return jsonResponseOnSuccess(res, 200, { product });
+    } catch (error) {
+        console.log(error);
+        return jsonResponseOnSuccess(res, 500, { message: error });
+
+    }
+
+}
+
 module.exports = router
     .get('/', onGettingAllProducts)
     .get('/product/:id', getProductById)
     .post('/product/:id/like', verifyToken, addLike)
     .post('/product/:id/view', verifyToken, addView)
+    .post('/product/:id/vote', verifyToken, addVote)
     .post('/product/add', verifyToken, onCreateProduct)
     .put('/product/edit/:productId', verifyToken, onEditProduct);
 
