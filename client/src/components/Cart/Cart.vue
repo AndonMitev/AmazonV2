@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <v-container fluid>
     <PageTitle :title="pageTitle" />
     <ProductsInCart
       v-if="productsInCart && productsInCart.length"
       :productsInCart="productsInCart"
+      @removeProduct="removeProduct"
     />
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -19,7 +20,10 @@ export default {
     pageTitle: 'My Cart'
   }),
   methods: {
-    ...mapActions(['getCartAction'])
+    ...mapActions(['getCartAction', 'removeProductFromCartAction']),
+    removeProduct(productId) {
+      this.removeProductFromCartAction(productId);
+    }
   },
   computed: {
     ...mapGetters(['productsInCart'])

@@ -42,12 +42,14 @@
           </v-flex>
         </v-layout>
         <v-layout mt-5 row justify-space-around>
+          <v-text-field type="number" label="Quantity" v-model="quantity"></v-text-field>
           <v-flex md-4>
             <v-btn round color="orange" depressed @click="addToCart">
               <v-icon left>shopping_cart</v-icon>
               <span>Add to cart</span>
             </v-btn>
           </v-flex>
+
           <v-flex md-4>
             <v-btn round color="teal">
               <v-icon left>keyboard_backspace</v-icon>
@@ -64,7 +66,8 @@
 export default {
   name: 'ProductDetails',
   data: () => ({
-    rating: 3
+    rating: 3,
+    quantity: 0
   }),
   props: ['product'],
   methods: {
@@ -75,7 +78,7 @@ export default {
       this.$emit('addLike');
     },
     addToCart() {
-      this.$emit('addToCart');
+      this.$emit('addToCart', this.quantity);
     }
   }
 };

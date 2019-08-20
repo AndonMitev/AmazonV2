@@ -6,19 +6,25 @@ export default (() => {
 
     const routes = {
         addToCart: '/cart/',
-        getCart: '/cart/'
+        getCart: '/cart/',
+        removeProduct: '/cart/remove'
     }
 
-    const addToCart = async id => {
-        return await axios.post(routes.addToCart, {productId: id});
+    const addToCart = async (id, quantity) => {
+        return await axios.post(routes.addToCart, {productId: id, quantity});
     }
 
     const getCart = async () => {
         return await axios.get(routes.getCart);
     }
 
+    const removeProduct = async productId => {
+        return await axios.post(routes.removeProduct, {productId})
+    }
+
     return {
         addToCart,
-        getCart
+        getCart,
+        removeProduct
     }
 })();

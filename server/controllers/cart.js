@@ -24,7 +24,6 @@ const onGettingCart = async (req, res) => {
                 path: 'productsId',
                 model: 'Product'
             });
-
         return jsonResponseOnSuccess(res, 200, { cart });
     } catch (error) {
         return jsonResponseOnError(res, 500, error);
@@ -35,14 +34,20 @@ const onAddToCart = async (req, res) => {
     try {
         const userId = req.userData._id;
         const productId = req.body.productId;
+        const quantity = +req.body.quantity;
 
         const cart = await Cart
             .findOne({ userId });
 
         if (!cart) {
-            await Cart.create({ userId, productsId: [productId] });
+            await Cart.create({ userId, productsId: [{ product: productId, quantity }] });
         } else {
-            cart.productsId.push(productId);
+            const existingProduct = cart.productsId.find(prd => prd.product == productId);
+            if (existingProduct) {
+                existingProduct.quantity += quantity;
+            } else {
+                cart.productsId.push({ product: productId, quantity });
+            }
             await cart.save();
         }
 
@@ -69,20 +74,28 @@ const onDeleteCart = async (req, res) => {
 
 const onRemoveItemFromCart = async (req, res) => {
     try {
-        const productId = req.body;
-        const cartId = req.params.id;
-        const cart = await Cart.findById(cartId);
-        cart.productsId.filter(existingProductId => existingProductId !== productId);
+
+        const productId = req.body.productId;
+        const userId = req.userData._id;
+        const cart = await Cart.findOne({ userId });
+
+        cart.productsId = cart.productsId.filter(existingProductId => existingProductId != productId);
+
         await cart.save();
-        const newStateOfCart = await Cart.findById(cartId);
-        return jsonResponseOnSuccess(res, 200, { message: 'Item successfully removed', newStateOfCart });
+        const newStateOfCart = await Cart.findOne({ userId })
+            .populate({
+                path: 'productsId',
+                model: 'Product'
+            });;
+        return jsonResponseOnSuccess(res, 200, { message: 'Item successfully removed', cart: newStateOfCart });
     } catch (error) {
+        console.log(error);
         return jsonResponseOnError(res, 500, error);
     }
 }
 
 module.exports = router
     .get('/cart', verifyToken, onGettingCart)
+    .post('/cart/remove', verifyToken, onRemoveItemFromCart)
     .post('/cart', verifyToken, onAddToCart)
-    .delete('/cart/:cardId', verifyToken, onDeleteCart)
-    .put('/cart/:cardId', verifyToken, onRemoveItemFromCart);
+    .delete('/cart/:cardId', verifyToken, onDeleteCart);

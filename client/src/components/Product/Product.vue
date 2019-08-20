@@ -15,7 +15,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-flex xs12 sm12 md 6>
+        <v-flex xs12 sm12 md6>
           <v-btn :to="{name: 'details', params: {id: product._id}}" color="primary left"><v-icon left>info</v-icon> Details</v-btn>
           <v-btn @click="addToCart(product._id)" color="orange right"><v-icon left>shopping_cart</v-icon> Add to cart</v-btn>
         </v-flex>

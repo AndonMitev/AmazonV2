@@ -8,7 +8,12 @@
       </v-flex>
     </v-layout>
 
-    <ProductDetails :product="product" @addRaiting="addRaiting" @addLike="addLike" @addToCart="addToCart" />
+    <ProductDetails
+      :product="product"
+      @addRaiting="addRaiting"
+      @addLike="addLike"
+      @addToCart="addToCart"
+    />
 
     <v-divider></v-divider>
     <v-layout mt-5 row wrap>
@@ -81,8 +86,9 @@ export default {
     addView() {
       this.addViewAction(this.productId);
     },
-    addToCart() {
-      this.addToCartAction(this.productId);
+    addToCart(quantity) {
+      console.log(quantity);
+      this.addToCartAction({ id: this.productId, quantity });
     }
   },
   computed: {
