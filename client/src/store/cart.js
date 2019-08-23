@@ -5,14 +5,16 @@ const state = {
 }
 
 const actions = {
-    async addToCartAction({ commit }, {id, quantity}) {
-        await cartServices.addToCart(id, quantity);
+    async addToCartAction({ commit }, { id, quantity }) {
+        const response = await cartServices.addToCart(id, quantity);
+        commit('setProduct', response.data.product);
+
     },
     async getCartAction({ commit }) {
         const response = await cartServices.getCart();
         commit('setProductInCart', response.data.cart.productsId);
     },
-    async removeProductFromCartAction({commit}, productId) {
+    async removeProductFromCartAction({ commit }, productId) {
         const response = await cartServices.removeProduct(productId);
         commit('setProductInCart', response.data.cart.productsId);
     }

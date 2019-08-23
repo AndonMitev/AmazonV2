@@ -1,5 +1,7 @@
 const router = require('express').Router();
-const Cart = require('mongoose').model('Cart');
+const mongoose = require('mongoose');
+const Cart = mongoose.model('Cart');
+const Product = mongoose.model('Product');
 const verifyToken = require('../middleware/verify-token');
 
 const jsonResponseOnError = (res, statusCode, error) =>
@@ -21,7 +23,7 @@ const onGettingCart = async (req, res) => {
         const cart = await Cart
             .findOne({ userId })
             .populate({
-                path: 'productsId',
+                path: 'productsId.product',
                 model: 'Product'
             });
         return jsonResponseOnSuccess(res, 200, { cart });
@@ -51,10 +53,13 @@ const onAddToCart = async (req, res) => {
             await cart.save();
         }
 
+        const product = await Product.findById(productId);
+        product.quantity -= quantity;
+        await product.save();
+
         const updatedCart = await Cart
             .findOne({ userId });
-
-        return jsonResponseOnSuccess(res, 200, { message: 'Product successfully added!', cart: updatedCart.productsId });
+        return jsonResponseOnSuccess(res, 200, { message: 'Product successfully added!', cart: updatedCart.productsId, product });
     } catch (error) {
         return jsonResponseOnError(res, 500, error);
     }
