@@ -1,8 +1,14 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('mongoose').model('User');
+const verifyToken = require('../middleware/verify-token');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
+const Order = mongoose.model('Order');
 const env = require('../config/envoirment');
+
+const jsonResponseOnSuccess = (res, statusCode, data) =>
+    res.status(statusCode).json(data);
 
 const onSignUp = async (req, res) => {
     const { body: { email, password, role, address, firstName, lastName } } = req;
@@ -77,6 +83,24 @@ const onSignIn = async (req, res) => {
     }
 }
 
+const getProfile = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const user = await User.findById(id);
+        const orders = await Order.find({ userId: user._id });
+
+        console.log(orders);
+        return jsonResponseOnSuccess(res, 200, { user, orders, message: 'Comment successfully added' });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500)
+            .json({ error });
+    }
+}
+
 module.exports = router
     .post('/signup', onSignUp)
-    .post('/signin', onSignIn);
+    .post('/signin', onSignIn)
+    .get('/profile/:id', verifyToken, getProfile);

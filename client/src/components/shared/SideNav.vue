@@ -34,6 +34,13 @@
         :title="items[5].title"
         :link="items[5].link"
       />
+
+      <ListTile
+        v-if="userData || isLoggedIn"
+        :icon="items[7].icon"
+        :title="items[7].title"
+        :link="items[7].link"
+      />
       <span @click="logout">
         <ListTile
           v-if="userData || isLoggedIn"
@@ -77,6 +84,11 @@ export default {
           icon: 'highlight_off',
           title: 'Logout',
           link: '/login'
+        },
+        {
+          icon: 'accessibility',
+          title: 'Profile',
+          link: '/profile'
         }
       ]
     };

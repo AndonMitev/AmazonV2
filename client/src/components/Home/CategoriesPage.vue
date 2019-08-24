@@ -34,7 +34,6 @@ export default {
     ...mapActions(['getCategoriesAction'])
   },
   mounted() {
-    console.log('lol');
     this.getCategoriesAction();
   },
   components: {

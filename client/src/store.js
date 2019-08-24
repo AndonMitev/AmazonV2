@@ -7,6 +7,7 @@ import creatingPhases from './store/product-creating-phases';
 import cart from './store/cart';
 import user from './store/user';
 import comment from './store/comment';
+import order from './store/order';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     creatingPhases,
     cart,
     user,
-    comment
+    comment,
+    order
   }
 })

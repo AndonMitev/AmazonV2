@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import PageTitle from '../shared/PageTitle';
+import PageTitle from '../../shared/PageTitle';
 
 export default {
   name: 'AttachImage',

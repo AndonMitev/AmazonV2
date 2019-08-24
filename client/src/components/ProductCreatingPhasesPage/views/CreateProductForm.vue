@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import productRules from '../../services/rules/product';
-import PageTitle from '../shared/PageTitle';
+import productRules from '../../../services/rules/product';
+import PageTitle from '../../shared/PageTitle';
 
 export default {
   name: 'CreateProductForm',

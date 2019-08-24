@@ -31,7 +31,8 @@ export default {
       this.removeProductFromCartAction(productId);
     },
     finishOrder() {
-      this.finishOrderAction();
+      console.log(this.productsInCart);
+      this.finishOrderAction(this.productsInCart);
     }
   },
   computed: {

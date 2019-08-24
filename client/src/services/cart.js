@@ -8,11 +8,11 @@ export default (() => {
         addToCart: '/cart/',
         getCart: '/cart/',
         removeProduct: '/cart/remove',
-        finishOrder: ''
+        finishOrder: '/order'
     }
 
     const addToCart = async (id, quantity) => {
-        return await axios.post(routes.addToCart, {productId: id, quantity});
+        return await axios.post(routes.addToCart, { productId: id, quantity });
     }
 
     const getCart = async () => {
@@ -20,12 +20,17 @@ export default (() => {
     }
 
     const removeProduct = async productId => {
-        return await axios.post(routes.removeProduct, {productId})
+        return await axios.post(routes.removeProduct, { productId })
+    }
+
+    const finishOrder = async payload => {
+        return await axios.post(routes.finishOrder, payload);
     }
 
     return {
         addToCart,
         getCart,
-        removeProduct
+        removeProduct,
+        finishOrder
     }
 })();

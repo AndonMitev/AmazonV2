@@ -14,7 +14,8 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
 const onCommentAdded = async (req, res) => {
     try {
         const productId = req.params.productId;
-        const { userId, email } = req.userData;
+        const userId = req.userData._id;
+        const email = req.userData.email;
         const content = req.body.content;
 
         const comment = await Comment.create({ productId, userId, content, email });

@@ -14,8 +14,11 @@ const actions = {
     async getCartAction({ commit }) {
 
         const response = await cartServices.getCart();
-        commit('setProductInCart', response.data.cart.productsId);
+        if (response.data.cart && response.data.cart.productsId && response.data.cart.productsId.length) {
+            commit('setProductInCart', response.data.cart.productsId);
+        }
         commit('setIsLoading', false);
+
     },
     async removeProductFromCartAction({ commit }, productId) {
 
@@ -23,8 +26,9 @@ const actions = {
         commit('setProductInCart', response.data.cart.productsId);
         commit('setIsLoading', false);
     },
-    async finishOrder({ commit }, _) {
-        await cartServices.finishOrder();
+    async finishOrderAction({ commit }, productsInCart) {
+        console.log(productsInCart);
+        await cartServices.finishOrder(productsInCart);
     }
 }
 

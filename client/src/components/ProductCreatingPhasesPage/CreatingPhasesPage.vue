@@ -24,9 +24,9 @@
 <script>
 import Stepper from '../shared/Stepper';
 import { mapActions, mapGetters } from 'vuex';
-const productForm = () => import('./CreateProductForm');
-const categories = () => import('./Categories');
-const attachImage = () => import('./AttachImage');
+const productForm = () => import('./views/CreateProductForm');
+const categories = () => import('./views/Categories');
+const attachImage = () => import('./views/AttachImage');
 
 export default {
   name: 'CreateProduct',

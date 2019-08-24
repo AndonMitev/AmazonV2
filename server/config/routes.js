@@ -6,6 +6,7 @@ const categoryServices = require('../controllers/category');
 const commentServices = require('../controllers/comment');
 const cartServices = require('../controllers/cart');
 const creatingPhasesServices = require('../controllers/creatingPhases');
+const orderServices = require('../controllers/order');
 
 router
     .use('', homeServices)
@@ -13,6 +14,7 @@ router
     .use('', categoryServices)
     .use('', commentServices)
     .use('', cartServices)
-    .use('', creatingPhasesServices);
+    .use('', creatingPhasesServices)
+    .use('', orderServices);
 
 module.exports = router;
