@@ -5,12 +5,11 @@ export default (() => {
     axios.defaults.baseURL = baseUrl;
 
     const routes = {
-        addComment: '/comment/',
-
+        addComment: '/product/',
     }
 
-    const addComment = async ({id, comment}) =>
-        await axios.post(routes.addComment + id, comment);
+    const addComment = async ({ id, comment }) =>
+        await axios.post(routes.addComment + id + '/comment', { content: comment });
 
     return {
         addComment

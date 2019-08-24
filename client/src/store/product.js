@@ -26,6 +26,7 @@ const actions = {
     },
     async getProductByIdAction({ commit }, productId) {
         const response = await productServices.getProductById(productId);
+        console.log(response.data);
         commit('setProduct', response.data.product);
     },
     async addLikeAction({ commit }, productId) {
@@ -36,7 +37,7 @@ const actions = {
         const response = await productServices.addView(productId);
         commit('setProduct', response.data.product);
     },
-    async addRaitingAction({commit}, payload) {
+    async addRaitingAction({ commit }, payload) {
         const response = await productServices.addVote(payload);
         commit('setProduct', response.data.product);
     },

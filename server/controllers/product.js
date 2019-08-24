@@ -104,7 +104,8 @@ const onEditProduct = async (req, res) => {
         const { categories } = productData;
         addToCategory(categories, product._id);
 
-        const newStateOfProduct = await Product.findById(productId);
+        const newStateOfProduct = await Product.findById(productId)
+            .populate('comments');
 
         return jsonResponseOnSuccess(res, 200, { newStateOfProduct, message: 'Product edited' });
     } catch (error) {
@@ -117,12 +118,12 @@ const getProductById = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const product = await Product.findById(id);
+        const product = await Product.findById(id)
+            .populate('comments');
 
         return jsonResponseOnSuccess(res, 200, { product });
     } catch (error) {
         return jsonResponseOnSuccess(res, 404, { message: 'Not found' });
-        console.log(error);
     }
 }
 
@@ -131,7 +132,8 @@ const addLike = async (req, res) => {
         const productId = req.params.id;
         const userId = req.userData._id;
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
+            .populate('comments');
 
         if (product.likes.indexOf(userId) !== -1) {
             product.likes = product.likes.filter(user => user != userId);
@@ -153,7 +155,8 @@ const addView = async (req, res) => {
         const productId = req.params.id;
         const userId = req.userData._id;
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
+            .populate('comments');
 
         if (product.views.indexOf(userId) === -1) {
             product.views.push(userId);
@@ -174,7 +177,8 @@ const addVote = async (req, res) => {
         const userId = req.userData._id;
         const raiting = req.body.raitingValue;
         console.log(raiting);
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
+            .populate('comments');
 
         if (product.totalVotes.indexOf(userId) === -1) {
             product.totalVotes.push(userId);

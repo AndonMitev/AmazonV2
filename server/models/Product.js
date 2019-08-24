@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
   images: [{ type: String, default: [] }],
   price: { type: Number, required: [true, message.price.required], min: [0.00001, message.price.minPrice] },
   description: { type: String, required: [true, message.description] },
-  quantity: { type: Number, required: [true, message.quantity.required], min: [1, message.quantity.minNumber] },
+  quantity: { type: Number, required: [true, message.quantity.required] },
   state: { type: String, enum: ["new", "used"], required: [true, message.state] },
   // Default
   isDiscounted: { type: Boolean, default: false },

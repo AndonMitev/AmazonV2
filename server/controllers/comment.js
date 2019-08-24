@@ -14,16 +14,16 @@ const jsonResponseOnSuccess = (res, statusCode, data) =>
 const onCommentAdded = async (req, res) => {
     try {
         const productId = req.params.productId;
-        const userId = req.userData._id;
+        const { userId, email } = req.userData;
         const content = req.body.content;
 
-        const comment = await Comment.create({ productId, userId, content });
+        const comment = await Comment.create({ productId, userId, content, email });
         const product = await Product.findById(productId);
         product.comments.push(comment._id);
         await product.save();
         const newStateProduct = await Product.findById(productId).populate('comments');
 
-        return jsonResponseOnSuccess(res, 200, { comments: newStateProduct.comments, message: 'Comment successfully added' });
+        return jsonResponseOnSuccess(res, 200, { product: newStateProduct, message: 'Comment successfully added' });
     } catch (error) {
         return jsonResponseOnError(res, 500, error);
     }

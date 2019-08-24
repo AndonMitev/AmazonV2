@@ -6,10 +6,8 @@ const state = {
 
 const actions = {
     async addCommentAction({ commit }, payload) {
-        commentServices.addComment(payload)
-        // const response = await categoryServices.getCategories();
-        // commit('setCategories', response.data);
-        // commit('setIsLoading', false);
+        const response = await commentServices.addComment(payload);
+        commit('setProduct', response.data.product);
     }
 }
 

@@ -53,7 +53,8 @@ const onAddToCart = async (req, res) => {
             await cart.save();
         }
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
+            .populate('comments');
         product.quantity -= quantity;
         await product.save();
 
@@ -61,6 +62,7 @@ const onAddToCart = async (req, res) => {
             .findOne({ userId });
         return jsonResponseOnSuccess(res, 200, { message: 'Product successfully added!', cart: updatedCart.productsId, product });
     } catch (error) {
+        console.log(error);
         return jsonResponseOnError(res, 500, error);
     }
 }

@@ -3,7 +3,7 @@
     <v-layout row mt-2 justify-center>
       <v-flex xs10 mb-5>
         <v-carousel height="350" interval="3000">
-          <v-carousel-item v-for="(item,i) in product.model.images" :key="i" :src="item"></v-carousel-item>
+          <v-carousel-item v-for="(item,i) in product.images" :key="i" :src="item"></v-carousel-item>
         </v-carousel>
       </v-flex>
     </v-layout>
@@ -16,13 +16,14 @@
     />
 
     <v-divider></v-divider>
-    <Comments  @onSubmit="onSubmit"/>
+
+    <Comments @onSubmit="onSubmit" :comments="product.comments" />
   </div>
 </template>
 
 <script>
 import { GChart } from 'vue-google-charts';
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import ProductDetails from './views/ProductDetails';
 import Comments from './views/Comments';
 
@@ -37,7 +38,8 @@ export default {
       'addLikeAction',
       'addViewAction',
       'addRaitingAction',
-      'addToCartAction'
+      'addToCartAction',
+      'addCommentAction'
     ]),
     addRaiting(raitingValue) {
       this.addRaitingAction({ productId: this.productId, raitingValue });
@@ -52,15 +54,16 @@ export default {
       this.addToCartAction({ id: this.productId, quantity });
     },
     onSubmit(comment) {
-      this.addCommentAction({id: this.productId, comment});
+      this.addCommentAction({ id: this.productId, comment });
     }
   },
   computed: {
-    ...mapState(['product'])
+    ...mapGetters(['product'])
   },
   mounted() {
     this.productId = this.$route.params.id;
     this.getProductByIdAction(this.productId);
+    console.log(this.product);
     this.addView();
   },
   components: {

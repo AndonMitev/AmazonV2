@@ -2,41 +2,15 @@
   <v-layout row wrap>
     <v-flex xs12>
       <v-list>
-        <v-list-tile avatar ripple>
-          <v-list-tile-content>
-            <v-list-tile-title>Alex</v-list-tile-title>
-            <v-list-tile-sub-title
-              class="text--primary"
-            >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis adipisci repellendus quisquam pariatur quod animi illo deleniti laboriosam eos recusandae eaque facilis consequatur, odit vel. Eligendi commodi id praesentium mollitia!</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile avatar ripple>
-          <v-list-tile-content>
-            <v-list-tile-title>Alex</v-list-tile-title>
-            <v-list-tile-sub-title
-              class="text--primary"
-            >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis adipisci repellendus quisquam pariatur quod animi illo deleniti laboriosam eos recusandae eaque facilis consequatur, odit vel. Eligendi commodi id praesentium mollitia!</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile avatar ripple>
-          <v-list-tile-content>
-            <v-list-tile-title>Alex</v-list-tile-title>
-            <v-list-tile-sub-title
-              class="text--primary"
-            >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis adipisci repellendus quisquam pariatur quod animi illo deleniti laboriosam eos recusandae eaque facilis consequatur, odit vel. Eligendi commodi id praesentium mollitia!</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile avatar ripple>
-          <v-list-tile-content>
-            <v-list-tile-title>Alex</v-list-tile-title>
-            <v-list-tile-sub-title
-              class="text--primary"
-            >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis adipisci repellendus quisquam pariatur quod animi illo deleniti laboriosam eos recusandae eaque facilis consequatur, odit vel. Eligendi commodi id praesentium mollitia!</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        <div v-for="comment in comments" :key="comment._id">
+          <v-list-tile avatar ripple>
+            <v-list-tile-content>
+              <v-list-tile-title>{{comment.email}}</v-list-tile-title>
+              <v-list-tile-sub-title class="text--primary">{{comment.content}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider></v-divider>
+        </div>
       </v-list>
     </v-flex>
     <v-flex xs12 mb-5>
@@ -54,6 +28,7 @@ export default {
   data: () => ({
     comment: ''
   }),
+  props: ['comments'],
   computed: {
     isDisabled() {
       return this.comment.length;
@@ -62,6 +37,7 @@ export default {
   methods: {
     onSubmit() {
       this.$emit('onSubmit', this.comment);
+      this.comment = '';
     }
   }
 };
