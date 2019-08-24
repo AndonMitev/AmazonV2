@@ -10,18 +10,22 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'categories',
       component: CategoriesPage
     },
     {
       path: '/product/create',
+      name: 'create',
       component: () => import('./components/ProductCreatingPhasesPage/CreatingPhasesPage.vue')
     },
     {
       path: '/register',
+      name: 'register',
       component: () => import('./components/user/Register.vue')
     },
     {
       path: '/login',
+      name: 'login',
       component: () => import('./components/user/Login.vue')
     },
     {
@@ -31,6 +35,7 @@ export default new Router({
     },
     {
       path: '/cart',
+      name: 'cart',
       component: () => import('./components/Cart/Cart.vue')
     }
   ]

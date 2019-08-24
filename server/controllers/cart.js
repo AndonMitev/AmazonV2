@@ -83,15 +83,21 @@ const onRemoveItemFromCart = async (req, res) => {
         const productId = req.body.productId;
         const userId = req.userData._id;
         const cart = await Cart.findOne({ userId });
-
-        cart.productsId = cart.productsId.filter(existingProductId => existingProductId != productId);
+        const productToRemove = cart.productsId.find(data => data.product == productId);
+        cart.productsId = cart.productsId.filter(data => data.product != productId);
 
         await cart.save();
         const newStateOfCart = await Cart.findOne({ userId })
             .populate({
-                path: 'productsId',
+                path: 'productsId.product',
                 model: 'Product'
             });;
+
+        const product = await Product.findById(productId);
+        product.quantity += productToRemove.quantity;
+        await product.save();
+
+
         return jsonResponseOnSuccess(res, 200, { message: 'Item successfully removed', cart: newStateOfCart });
     } catch (error) {
         console.log(error);

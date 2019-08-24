@@ -7,7 +7,8 @@ export default (() => {
     const routes = {
         addToCart: '/cart/',
         getCart: '/cart/',
-        removeProduct: '/cart/remove'
+        removeProduct: '/cart/remove',
+        finishOrder: ''
     }
 
     const addToCart = async (id, quantity) => {

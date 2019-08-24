@@ -44,7 +44,7 @@
         <v-layout mt-5 row justify-space-around>
           <v-text-field type="number" label="Quantity" v-model="quantity"></v-text-field>
           <v-flex md-4>
-            <v-btn round color="orange" depressed @click="addToCart">
+            <v-btn round color="orange" depressed @click="addToCart" :disabled="isDisabled">
               <v-icon left>shopping_cart</v-icon>
               <span>Add to cart</span>
             </v-btn>
@@ -70,6 +70,11 @@ export default {
     quantity: 0
   }),
   props: ['product'],
+  computed: {
+    isDisabled() {
+      return this.quantity > this.product.model.quantity;
+    }
+  },
   methods: {
     addRaiting(raitingValue) {
       this.$emit('addRaiting', raitingValue);

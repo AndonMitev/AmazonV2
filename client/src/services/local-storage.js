@@ -16,8 +16,17 @@ export default (() => {
         localStorage.removeItem(key);
     }
 
-    const setUserData = user => {
-        const { token, email, _id } = user.data;
+    const isUserLogged = () => {
+        return localStorage.getItem('id');
+    }
+
+    const clearLs = () => {
+        localStorage.clear();
+    }
+
+    const setUserData = data => {
+
+        const { token, email, _id } = data;
 
         setLsStorage({ key: 'token', value: token });
         setLsStorage({ key: 'email', value: email });
@@ -29,7 +38,9 @@ export default (() => {
         getLsStorage,
         checkLsStorage,
         deleteFromLsStorage,
-        setUserData
+        setUserData,
+        clearLs,
+        isUserLogged
     }
 
 })();

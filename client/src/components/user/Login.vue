@@ -33,6 +33,7 @@
 import loginRules from '../../services/rules/login';
 import userServices from '../../services/user';
 import lsServices from '../../services/local-storage';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Login',
@@ -46,13 +47,12 @@ export default {
     ...loginRules
   },
   methods: {
-    async onSubmit() {
+    ...mapActions(['loginAction']),
+    onSubmit() {
       if (this.$refs.form.validate()) {
-        try {
-          const userMetadata = await userServices.login({ ...this.userData });
-          lsServices.setUserData(userMetadata);
-          this.$toastr.success('Message', 'Title');
-        } catch (error) {}
+        this.loginAction(this.userData);
+        this.$toastr.success('Message', 'Title');
+        this.$router.push('/');
       }
     }
   }

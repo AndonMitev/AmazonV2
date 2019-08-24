@@ -49,9 +49,9 @@ export default {
   data: () => ({
     product: {
       name: '',
-      price: null,
+      price: 0,
       description: '',
-      quantity: null,
+      quantity: 0,
       state: '',
       availableStates: ['new', 'used']
     }

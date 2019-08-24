@@ -5,6 +5,7 @@
       v-if="productsInCart && productsInCart.length"
       :productsInCart="productsInCart"
       @removeProduct="removeProduct"
+      @finishOrder="finishOrder"
     />
   </v-container>
 </template>
@@ -20,9 +21,12 @@ export default {
     pageTitle: 'My Cart'
   }),
   methods: {
-    ...mapActions(['getCartAction', 'removeProductFromCartAction']),
+    ...mapActions(['getCartAction', 'removeProductFromCartAction', 'finishOrderAction']),
     removeProduct(productId) {
       this.removeProductFromCartAction(productId);
+    },
+    finishOrder() {
+      this.finishOrderAction();
     }
   },
   computed: {

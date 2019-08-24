@@ -17,6 +17,9 @@ const actions = {
     async removeProductFromCartAction({ commit }, productId) {
         const response = await cartServices.removeProduct(productId);
         commit('setProductInCart', response.data.cart.productsId);
+    },
+    async finishOrder({commit}, _) {
+        await cartServices.finishOrder();
     }
 }
 

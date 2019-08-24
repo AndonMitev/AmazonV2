@@ -9,6 +9,7 @@ require('../models/Cart');
 require('../models/Comment');
 require('../models/CreatingPhases');
 require('../models/TempProduct');
+require('../models/Order');
 
 const dbConnection = mongoose.connect(
   env.dev.connectionString,
