@@ -14,6 +14,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import PageTitle from '../shared/PageTitle';
 import ProductsInCart from './views/ProductsInCart';
+import Product from '../Home/views/Product';
 
 export default {
   name: 'Cart',
@@ -21,7 +22,11 @@ export default {
     pageTitle: 'My Cart'
   }),
   methods: {
-    ...mapActions(['getCartAction', 'removeProductFromCartAction', 'finishOrderAction']),
+    ...mapActions([
+      'getCartAction',
+      'removeProductFromCartAction',
+      'finishOrderAction'
+    ]),
     removeProduct(productId) {
       this.removeProductFromCartAction(productId);
     },
@@ -37,7 +42,8 @@ export default {
   },
   components: {
     PageTitle,
-    ProductsInCart
+    ProductsInCart,
+    Product
   }
 };
 </script>

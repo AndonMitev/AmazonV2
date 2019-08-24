@@ -6,19 +6,24 @@ const state = {
 
 const actions = {
     async addToCartAction({ commit }, { id, quantity }) {
+
         const response = await cartServices.addToCart(id, quantity);
         commit('setProduct', response.data.product);
-
+        commit('setIsLoading', false);
     },
     async getCartAction({ commit }) {
+
         const response = await cartServices.getCart();
         commit('setProductInCart', response.data.cart.productsId);
+        commit('setIsLoading', false);
     },
     async removeProductFromCartAction({ commit }, productId) {
+
         const response = await cartServices.removeProduct(productId);
         commit('setProductInCart', response.data.cart.productsId);
+        commit('setIsLoading', false);
     },
-    async finishOrder({commit}, _) {
+    async finishOrder({ commit }, _) {
         await cartServices.finishOrder();
     }
 }

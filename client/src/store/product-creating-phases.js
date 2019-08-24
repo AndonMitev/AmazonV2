@@ -11,11 +11,12 @@ const state = {
         images: []
     },
     currentStep: 1,
-    isLoading: true
+    isLoading: null
 };
 
 const actions = {
     async getCurrentStepAction({ commit }, step) {
+
         const response = await creatingPhasesServices.getCurrentStep(step);
         const data = response.data;
         const currentStep = data.currentPhase.currentStep;
@@ -26,12 +27,14 @@ const actions = {
     },
 
     async completeFirstStepAction({ commit }, { product, step }) {
+
         const response = await creatingPhasesServices.completeFirstStep({ product, step });
         commit('setCurrentStep', response.data.step)
         commit('setIsLoading', false);
     },
 
     async completeSecondStepAction({ commit }, { categories, step }) {
+
         const response = await creatingPhasesServices.completeSecondStep({ categories, step });
         const currentStep = response.data.currentPhase.currentStep;
         commit('setCurrentStep', currentStep)

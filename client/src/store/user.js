@@ -9,7 +9,6 @@ const actions = {
     async loginAction({ commit }, userData) {
         const response = await userServices.login({ ...userData });
         lsServices.setUserData(response.data);
-        console.log(response.data);
         commit('setUserData', response.data._id);
     },
     async logoutAction({ commit }, _) {

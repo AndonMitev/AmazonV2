@@ -3,7 +3,10 @@
     <SideNav />
     <v-toolbar app></v-toolbar>
     <v-content>
-      <v-container fluid>
+      <v-container v-if="isLoading === true">
+        <h1>Loading....</h1>
+      </v-container>
+      <v-container v-else fluid>
         <router-view />
       </v-container>
     </v-content>
@@ -11,21 +14,18 @@
 </template>
 
 <script>
-import Product from './components/Product/Product';
 import SideNav from './components/shared/SideNav';
 import CategoriesPage from './components/Home/CategoriesPage';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    Product,
     SideNav,
     CategoriesPage
   },
-  data() {
-    return {
-      //
-    };
+  computed: {
+    ...mapGetters(['isLoading'])
   }
 };
 </script>

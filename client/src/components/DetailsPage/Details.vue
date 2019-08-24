@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!isLoading">
     <v-layout row mt-2 justify-center>
       <v-flex xs10 mb-5>
         <v-carousel height="350" interval="3000">
@@ -14,7 +14,6 @@
       @addLike="addLike"
       @addToCart="addToCart"
     />
-
     <v-divider></v-divider>
 
     <Comments @onSubmit="onSubmit" :comments="product.comments" />
@@ -58,12 +57,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['product'])
+    ...mapGetters(['product', 'isLoading'])
   },
   mounted() {
     this.productId = this.$route.params.id;
     this.getProductByIdAction(this.productId);
-    console.log(this.product);
     this.addView();
   },
   components: {

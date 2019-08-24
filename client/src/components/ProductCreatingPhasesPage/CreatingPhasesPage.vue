@@ -34,7 +34,7 @@ export default {
     showProduct: false
   }),
   computed: {
-    ...mapGetters(['step', 'tempProduct', 'isLoading'])
+    ...mapGetters(['step', 'tempProduct', 'isLoading', 'product'])
   },
   methods: {
     ...mapActions([
@@ -61,6 +61,7 @@ export default {
     },
     onComplete() {
       this.finishCreatingPhaseAction(this.tempProduct);
+      this.$router.push('/');
     }
   },
   mounted() {
